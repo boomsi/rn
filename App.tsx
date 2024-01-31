@@ -8,14 +8,20 @@ import {
   Text,
   TextInput,
   View,
+  Platform,
+  StyleSheet,
 } from 'react-native';
+
+import Home from './src/screens/home';
 
 const HelloWorldApp = () => {
   const [text, setText] = useState<string>('');
 
   return (
     <SafeAreaView>
+      <Home />
       {/* <View style={{padding: 8}}>
+        <Text style={style.aa}>2333</Text>
         <TextInput
           style={{
             height: 60,
@@ -32,7 +38,12 @@ const HelloWorldApp = () => {
           }}></TextInput>
 
         <View>
-          <Text>输入内容</Text>
+          {Platform.OS === 'ios' ? <Text>IOS</Text> : <Text>Android</Text>}
+          {Platform.select({
+            ios: <Text>IOS</Text>,
+            android: <Text>Android</Text>,
+          })}
+          <Text>{Platform.Version}</Text>
           <Text>{text}</Text>
         </View>
       </View> */}
@@ -110,5 +121,11 @@ const HelloWorldApp = () => {
     </SafeAreaView>
   );
 };
+
+const style = StyleSheet.create({
+  aa: {
+    color: '#f40',
+  },
+});
 
 export default HelloWorldApp;
