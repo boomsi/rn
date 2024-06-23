@@ -1,4 +1,11 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableHighlight,
+  TouchableHighlightBase,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   Avatar,
   Button,
@@ -56,6 +63,25 @@ export default function HomeScreen({
   navigation: any;
   route: any;
 }) {
+  const jumpToDetails = (options: (typeof menu)[number]) => {
+    switch (options.key) {
+      case 'day':
+      case 'important':
+      case 'planned':
+      case 'assigned':
+      case 'email':
+      case 'task':
+        navigation.navigate('Details', options);
+        break;
+      case 'rise':
+      case 'untitled':
+        navigation.navigate('Details', options);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
@@ -67,26 +93,34 @@ export default function HomeScreen({
             />
             <Text style={styles.name}>Ma Bo</Text>
           </View>
-          <Icon source="forward" size={24} />
+          <Icon source="forward" size={20} />
         </View>
 
         <ScrollView contentContainerStyle={styles.list}>
           {menu.map(({name, key}) => (
-            <Text style={styles.listItem} key={key}>
-              {name}
-            </Text>
+            <TouchableHighlight
+              underlayColor="#ccc"
+              onPress={() => jumpToDetails({key, name})}>
+              <Text style={styles.listItem} key={key}>
+                {name}
+              </Text>
+            </TouchableHighlight>
           ))}
           <Divider style={styles.divider} />
           {subMenu.map(({name, key}) => (
-            <Text style={styles.listItem} key={key}>
-              {name}
-            </Text>
+            <TouchableHighlight
+              underlayColor="#ccc"
+              onPress={() => jumpToDetails({key, name})}>
+              <Text style={styles.listItem} key={key}>
+                {name}
+              </Text>
+            </TouchableHighlight>
           ))}
         </ScrollView>
 
         <View style={styles.footerBar}>
           <Text>新建列表</Text>
-          <Icon source="forward" size={24} />
+          <Icon source="forward" size={20} />
         </View>
       </View>
     </SafeAreaView>
@@ -118,12 +152,12 @@ const styles = StyleSheet.create({
   list: {},
   listItem: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 16,
   },
   footerBar: {
     position: 'absolute',
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 16,
     bottom: 0,
     left: 0,
     width: '100%',

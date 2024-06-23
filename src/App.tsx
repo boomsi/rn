@@ -16,7 +16,7 @@ function App(): React.JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Details"
         screenOptions={{
           headerStyle: {
             backgroundColor: '#38f',
@@ -29,32 +29,6 @@ function App(): React.JSX.Element {
         {routes.map(route => (
           <Stack.Screen key={route.name} {...route} />
         ))}
-        {/* <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          initialParams={{kk: 'initial params'}}
-          options={{
-            title: 'Overview',
-            headerStyle: {
-              backgroundColor: '#fff',
-            },
-            headerTintColor: '#000', // font color
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-        />
-        <Stack.Screen
-          name="Details"
-          component={DetailsScreen}
-          options={{
-            headerRight: () => <Button title="Info" color="#fff" />,
-            headerBackTitle: 'Back',
-            headerBackTitleStyle: {
-              fontSize: 30,
-            },
-          }}
-        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -9,7 +9,7 @@ const routes: Parameters<typeof Stack.Screen>[number][] = [
     name: 'Home',
     component: HomeScreen,
     options: {
-      headerShown: false,
+      headerShown: false, // hide header
       // title: 'Overview',
       // headerStyle: {
       //   backgroundColor: '#fff',
@@ -23,6 +23,13 @@ const routes: Parameters<typeof Stack.Screen>[number][] = [
   {
     name: 'Details',
     component: DetailsScreen,
+    initialParams: {
+      key: 'day',
+      name: '我的一天',
+    },
+    options: {
+      headerShown: false,
+    },
   },
 ];
 
