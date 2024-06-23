@@ -9,14 +9,15 @@ const routes: Parameters<typeof Stack.Screen>[number][] = [
     name: 'Home',
     component: HomeScreen,
     options: {
-      title: 'Overview',
-      headerStyle: {
-        backgroundColor: '#fff',
-      },
-      headerTintColor: '#000', // font color
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
+      headerShown: false,
+      // title: 'Overview',
+      // headerStyle: {
+      //   backgroundColor: '#fff',
+      // },
+      // headerTintColor: '#000', // font color
+      // headerTitleStyle: {
+      //   fontWeight: 'bold',
+      // },
     },
   },
   {
