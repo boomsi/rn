@@ -1,22 +1,7 @@
-import {
-  ScrollView,
-  StyleSheet,
-  TouchableHighlight,
-  TouchableHighlightBase,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  Avatar,
-  Button,
-  Divider,
-  Icon,
-  List,
-  Text,
-  TouchableRipple,
-  useTheme,
-} from 'react-native-paper';
+import {ScrollView, StyleSheet, TouchableHighlight, View} from 'react-native';
+import {Avatar, Divider, Text} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {MaterialIcon} from '../../../components/Icon';
 
 const menu = [
   {
@@ -89,11 +74,11 @@ export default function HomeScreen({
           <View style={styles.avatar}>
             <Avatar.Image
               size={24}
-              source={require('../../assets/images/nn.webp')}
+              source={require('../../../assets/images/nn.webp')}
             />
             <Text style={styles.name}>Ma Bo</Text>
           </View>
-          <Icon source="forward" size={20} />
+          <MaterialIcon name="forward" size={20} />
         </View>
 
         <ScrollView contentContainerStyle={styles.list}>
@@ -120,7 +105,7 @@ export default function HomeScreen({
 
         <View style={styles.footerBar}>
           <Text>新建列表</Text>
-          <Icon source="forward" size={20} />
+          <MaterialIcon name="forward" size={20} />
         </View>
       </View>
     </SafeAreaView>

@@ -1,7 +1,17 @@
 import {useState} from 'react';
 import {StyleSheet, View, TextInput, FlatList} from 'react-native';
-import {Icon, Text} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {v4 as uuidv4} from 'uuid';
+import {produce} from 'immer';
+import {MaterialIcon} from '../../../components/Icon';
+
+export type ITask = {
+  id: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+};
 
 export default function DetailsScreen({
   navigation,
@@ -10,8 +20,28 @@ export default function DetailsScreen({
   navigation: any;
   route: any;
 }) {
+  const [currentValue, setCurrentValue] = useState<string>('');
+  const [taskList, setTaskList] = useState<ITask[]>([]);
+
   const jumpToList = () => {
     navigation.goBack();
+  };
+
+  const onCreatTask = () => {
+    setTaskList(old =>
+      produce(old, draft => {
+        draft.push({
+          id: uuidv4(),
+          content: currentValue,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
+      }),
+    );
+  };
+
+  const onCurrentValueChange = (v: string) => {
+    setCurrentValue(v);
   };
 
   return (
@@ -19,27 +49,34 @@ export default function DetailsScreen({
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.more}>
-            <Icon source="plus" size={20} color="#000" />
+            <MaterialIcon name="plus" size={20} color="#000" />
             <Text onPress={jumpToList}>列表</Text>
           </View>
           <View style={styles.more}>
-            <Icon source="plus" size={20} color="#000" />
-            <Icon source="plus" size={20} color="#000" />
+            <MaterialIcon name="plus" size={20} color="#000" />
+            <MaterialIcon name="plus" size={20} color="#000" />
           </View>
         </View>
         <View style={styles.content}>
           <Text style={styles.title}>{route.params.name}</Text>
           <Text style={styles.subtitle}>6月23日 星期日</Text>
           <FlatList
-            data={[{key: 'a'}, {key: 'b'}]}
-            renderItem={({item}) => <Text>{item.key}</Text>}
+            data={taskList}
+            renderItem={({item}) => <Text key={item.id}>{item.content}</Text>}
           />
         </View>
 
         <View style={styles.footerBar}>
           <View style={styles.foot}>
-            <Icon source="plus" size={20} color="#000" />
-            <TextInput style={styles.addTaskInput} placeholder="添加任务" />
+            <MaterialIcon name="plus" size={20} color="#000" />
+            <TextInput
+              value={currentValue}
+              style={styles.addTaskInput}
+              onChangeText={onCurrentValueChange}
+              placeholder="添加任务"
+              placeholderTextColor="#fff"
+              onSubmitEditing={onCreatTask}
+            />
           </View>
         </View>
       </View>
@@ -85,11 +122,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,.1)',
+    backgroundColor: 'rgba(0,0,0,.2)',
     borderRadius: 4,
   },
   addTaskInput: {
     height: 40,
     paddingHorizontal: 8,
+    flex: 1,
   },
 });
