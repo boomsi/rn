@@ -1,10 +1,18 @@
 import {useState} from 'react';
-import {StyleSheet, View, TextInput, FlatList, Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  FlatList,
+  Dimensions,
+  Touchable,
+  TouchableOpacity,
+} from 'react-native';
 import {Text} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {v4 as uuidv4} from 'uuid';
 import {produce} from 'immer';
-import {MaterialIcon} from '../../../components/Icon';
+import {MaterialIcon} from '../../../components/MaterialIcon';
 import publicStyles from 'app/styles';
 
 export type ITask = {
@@ -51,8 +59,10 @@ export default function DetailsScreen({
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={publicStyles.inline}>
-            <MaterialIcon name="backburger" size={20} color="#000" />
-            <Text onPress={jumpToList}>列表</Text>
+            <TouchableOpacity onPress={jumpToList} style={publicStyles.inline}>
+              <MaterialIcon name="chevron-left" size={20} color="#000" />
+              <Text>列表</Text>
+            </TouchableOpacity>
           </View>
           <View style={publicStyles.inline}>
             <MaterialIcon
@@ -77,7 +87,6 @@ export default function DetailsScreen({
             )}
           />
         </View>
-
         <View style={styles.footerBar}>
           <View style={[styles.foot, publicStyles.inline]}>
             <MaterialIcon name="plus" size={20} color="blue" />

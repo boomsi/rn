@@ -1,7 +1,7 @@
 import {ScrollView, StyleSheet, TouchableHighlight, View} from 'react-native';
 import {Avatar, Divider, Text} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {MaterialIcon} from '../../../components/Icon';
+import {MaterialIcon} from '../../../components/MaterialIcon';
 import publicStyles from 'app/styles';
 
 const menu = [
@@ -135,7 +135,6 @@ export default function HomeScreen({
             </TouchableHighlight>
           ))}
         </ScrollView>
-
         <View style={[styles.footerBar, publicStyles.inline]}>
           <View style={publicStyles.inline}>
             <MaterialIcon name="plus" size={20} color="blue" />
