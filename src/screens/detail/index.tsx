@@ -5,6 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {v4 as uuidv4} from 'uuid';
 import {produce} from 'immer';
 import {MaterialIcon} from '../../../components/Icon';
+import publicStyles from 'app/styles';
 
 export type ITask = {
   id: string;
@@ -49,13 +50,18 @@ export default function DetailsScreen({
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <View style={styles.more}>
-            <MaterialIcon name="plus" size={20} color="#000" />
+          <View style={publicStyles.inline}>
+            <MaterialIcon name="backburger" size={20} color="#000" />
             <Text onPress={jumpToList}>列表</Text>
           </View>
-          <View style={styles.more}>
-            <MaterialIcon name="plus" size={20} color="#000" />
-            <MaterialIcon name="plus" size={20} color="#000" />
+          <View style={publicStyles.inline}>
+            <MaterialIcon
+              style={styles.mr8}
+              name="lightbulb-on-outline"
+              size={20}
+              color="#000"
+            />
+            <MaterialIcon name="motion-outline" size={20} color="#000" />
           </View>
         </View>
         <View style={styles.content}>
@@ -73,8 +79,8 @@ export default function DetailsScreen({
         </View>
 
         <View style={styles.footerBar}>
-          <View style={styles.foot}>
-            <MaterialIcon name="plus" size={20} color="#000" />
+          <View style={[styles.foot, publicStyles.inline]}>
+            <MaterialIcon name="plus" size={20} color="blue" />
             <TextInput
               value={currentValue}
               style={styles.addTaskInput}
@@ -101,11 +107,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 16,
   },
-  more: {
-    display: 'flex',
-    alignContent: 'center',
-    flexDirection: 'row',
-  },
+
   content: {
     // flex: 1,
     paddingHorizontal: 8,
@@ -136,9 +138,6 @@ const styles = StyleSheet.create({
   },
   foot: {
     paddingHorizontal: 8,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,.2)',
     borderRadius: 4,
   },
@@ -146,5 +145,8 @@ const styles = StyleSheet.create({
     height: 40,
     paddingHorizontal: 8,
     flex: 1,
+  },
+  mr8: {
+    marginRight: 8,
   },
 });
