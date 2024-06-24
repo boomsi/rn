@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {StyleSheet, View, TextInput, FlatList} from 'react-native';
+import {StyleSheet, View, TextInput, FlatList, Dimensions} from 'react-native';
 import {Text} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {v4 as uuidv4} from 'uuid';
@@ -38,6 +38,7 @@ export default function DetailsScreen({
         });
       }),
     );
+    setCurrentValue('');
   };
 
   const onCurrentValueChange = (v: string) => {
@@ -62,7 +63,12 @@ export default function DetailsScreen({
           <Text style={styles.subtitle}>6月23日 星期日</Text>
           <FlatList
             data={taskList}
-            renderItem={({item}) => <Text key={item.id}>{item.content}</Text>}
+            style={styles.list}
+            renderItem={({item}) => (
+              <View style={styles.listItem} key={item.id}>
+                <Text>{item.content}</Text>
+              </View>
+            )}
           />
         </View>
 
@@ -101,6 +107,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   content: {
+    // flex: 1,
     paddingHorizontal: 8,
   },
   title: {
@@ -109,6 +116,16 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
+  },
+  list: {
+    height: Dimensions.get('window').height - 250,
+  },
+  listItem: {
+    padding: 16,
+    backgroundColor: 'rgba(100, 100, 100, .8)',
+    margin: 4,
+    borderRadius: 6,
+    color: '#fff',
   },
   footerBar: {
     position: 'absolute',

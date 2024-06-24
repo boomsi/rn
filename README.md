@@ -2,7 +2,8 @@
 
 #### TODO
 
-- Add Icon
+- ~~Add Icon~~
 - Animation
 - Style clear
 - Add Redux
+- More pages
