@@ -1,7 +1,7 @@
 import {ScrollView, StyleSheet, TouchableHighlight, View} from 'react-native';
 import {Avatar, Divider, Text} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {MaterialIcon} from '../../../components/MaterialIcon';
+import {MaterialIcon} from 'app/components/MaterialIcon';
 import publicStyles from 'app/styles';
 
 const menu = [
@@ -102,10 +102,9 @@ export default function HomeScreen({
           {menu.map(item => (
             <TouchableHighlight
               underlayColor="#ccc"
-              onPress={() => jumpToDetails(item)}>
-              <View
-                style={[styles.listItem, publicStyles.inline]}
-                key={item.key}>
+              onPress={() => jumpToDetails(item)}
+              key={item.key}>
+              <View style={[styles.listItem, publicStyles.inline]}>
                 <MaterialIcon
                   style={styles.listItemIcon}
                   name={item.icon}
@@ -120,10 +119,9 @@ export default function HomeScreen({
           {subMenu.map(item => (
             <TouchableHighlight
               underlayColor="#ccc"
-              onPress={() => jumpToDetails(item)}>
-              <View
-                style={[styles.listItem, publicStyles.inline]}
-                key={item.key}>
+              onPress={() => jumpToDetails(item)}
+              key={item.key}>
+              <View style={[styles.listItem, publicStyles.inline]}>
                 <MaterialIcon
                   style={styles.listItemIcon}
                   name={item.icon}

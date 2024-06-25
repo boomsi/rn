@@ -1,33 +1,54 @@
-
-module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
-  env: {
-    production: {
-      plugins: ['react-native-paper/babel'],
-    },
-  },
-};
 // module.exports = {
-//   presets: [
-//     'module:@react-native/babel-preset',
-//     'module:metro-react-native-babel-preset',
-//   ],
-//   plugins: [
-//     [
-//       'module-resolver',
-//       {
-//         root: ['./src'],
-//         extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
-//         alias: {
-//           tests: ['./tests/'],
-//           '@components': './src/components',
-//         },
-//       },
-//     ],
-//   ],
+//   presets: ['module:metro-react-native-babel-preset'],
 //   env: {
 //     production: {
 //       plugins: ['react-native-paper/babel'],
 //     },
 //   },
 // };
+
+// module.exports = {
+//   presets: [
+//     [
+//       'module:metro-react-native-babel-preset',
+//       {
+//         runtime: 'automatic',
+//       },
+//     ],
+//   ],
+//   plugins: [['@babel/plugin-transform-private-methods']],
+//   env: {
+//     production: {
+//       plugins: [
+//         'react-native-paper/babel',
+//         ['@babel/plugin-transform-private-methods'],
+//       ],
+//     },
+//   },
+// };
+
+module.exports = {
+  presets: [
+    [
+      'module:metro-react-native-babel-preset',
+      {
+        runtime: 'automatic',
+      },
+    ],
+  ],
+  plugins: [
+    ['@babel/plugin-transform-class-properties', {loose: true}],
+    ['@babel/plugin-transform-private-methods', {loose: true}],
+    ['@babel/plugin-transform-private-property-in-object', {loose: true}],
+  ],
+  env: {
+    production: {
+      plugins: [
+        'react-native-paper/babel',
+        ['@babel/plugin-transform-class-properties', {loose: true}],
+        ['@babel/plugin-transform-private-methods', {loose: true}],
+        ['@babel/plugin-transform-private-property-in-object', {loose: true}],
+      ],
+    },
+  },
+};

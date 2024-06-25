@@ -7,12 +7,13 @@ import {
   Dimensions,
   Touchable,
   TouchableOpacity,
+  Text
 } from 'react-native';
-import {Text} from 'react-native-paper';
+
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {v4 as uuidv4} from 'uuid';
 import {produce} from 'immer';
-import {MaterialIcon} from '../../../components/MaterialIcon';
+import {MaterialIcon} from 'app/components/MaterialIcon';
 import publicStyles from 'app/styles';
 
 export type ITask = {

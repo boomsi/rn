@@ -9,7 +9,7 @@ const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 const config = {
   resolver: {
     extraNodeModules: {
-      'app': `${__dirname}/src`,
+      app: `${__dirname}/src`,
     },
   },
 };
