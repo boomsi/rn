@@ -5,14 +5,15 @@
 import {AppRegistry} from 'react-native';
 import App from './src/App';
 import {name as appName} from './app.json';
-import {PaperProvider} from 'react-native-paper';
+// import {PaperProvider} from 'react-native-paper';
+import {ThemeProvider} from '@rneui/themed';
 import 'react-native-get-random-values';
 
 function Main() {
   return (
-    <PaperProvider>
+    <ThemeProvider>
       <App />
-    </PaperProvider>
+    </ThemeProvider>
   );
 }
 

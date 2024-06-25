@@ -1,8 +1,15 @@
-import {ScrollView, StyleSheet, TouchableHighlight, View, Text} from 'react-native';
-import {Avatar, Divider} from 'react-native-paper';
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableHighlight,
+  View,
+  Text,
+  Image,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {MaterialIcon} from 'app/components/MaterialIcon';
 import publicStyles from 'app/styles';
+import {Avatar, Divider} from '@rneui/themed';
 
 const menu = [
   {
@@ -89,9 +96,9 @@ export default function HomeScreen({
       <View style={styles.container}>
         <View style={[styles.header, publicStyles.inline]}>
           <View style={publicStyles.inline}>
-            <Avatar.Image
+            <Avatar
               size={24}
-              source={require('../../../assets/images/nn.webp')}
+              source={{uri: '../../../assets/images/nn.webp'}}
             />
             <Text style={styles.name}>Ma Bo</Text>
           </View>
