@@ -1,5 +1,5 @@
-import {ScrollView, StyleSheet, TouchableHighlight, View} from 'react-native';
-import {Avatar, Divider, Text} from 'react-native-paper';
+import {ScrollView, StyleSheet, TouchableHighlight, View, Text} from 'react-native';
+import {Avatar, Divider} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {MaterialIcon} from 'app/components/MaterialIcon';
 import publicStyles from 'app/styles';
@@ -95,7 +95,7 @@ export default function HomeScreen({
             />
             <Text style={styles.name}>Ma Bo</Text>
           </View>
-          <MaterialIcon name="text-search" size={20} color="purple" />
+          <MaterialIcon name="magnify" size={20} color="blue" />
         </View>
 
         <ScrollView>
