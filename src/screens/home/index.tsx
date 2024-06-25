@@ -80,11 +80,11 @@ export default function HomeScreen({
       case 'assigned':
       case 'email':
       case 'task':
-        navigation.navigate('Details', options);
+        navigation.navigate('List', options);
         break;
       case 'rise':
       case 'untitled':
-        navigation.navigate('Details', options);
+        navigation.navigate('List', options);
         break;
       default:
         break;

@@ -1,264 +1,155 @@
-import {useMemo, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  FlatList,
-  Dimensions,
-  Touchable,
-  TouchableOpacity,
-  Text,
-  StatusBar,
-  SectionList,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-} from 'react-native';
-
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {v4 as uuidv4} from 'uuid';
-import {produce} from 'immer';
+import {Divider} from '@rneui/base';
+import CheckBoxSelf from 'app/components/Checkbox';
 import {MaterialIcon} from 'app/components/MaterialIcon';
 import publicStyles from 'app/styles';
-import dayjs from 'dayjs';
-import CheckBoxSelf from 'app/components/Checkbox';
 
-export type ITask = {
-  id: string;
-  content: string;
-  status: 1 | 2; // 1 pendding 2 done
-  created_at: string;
-  updated_at: string;
-};
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableHighlight,
+} from 'react-native';
 
-export default function DetailsScreen({
-  navigation,
-  route,
-}: {
-  navigation: any;
-  route: any;
-}) {
-  const [currentValue, setCurrentValue] = useState<string>('');
-  const [taskList, setTaskList] = useState<ITask[]>([]);
-  const [collapsed, setCollapsed] = useState<{
-    [key: number]: boolean;
-  }>({
-    1: false,
-    2: false,
-  });
+const DetailsScreen = ({route}: any) => {
+  const onFinishedtask = () => {};
 
-  const jumpToList = () => {
-    navigation.goBack();
-  };
-
-  const onCreatTask = () => {
-    setTaskList(old =>
-      produce(old, draft => {
-        draft.push({
-          id: uuidv4(),
-          content: currentValue,
-          status: 1,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        });
-      }),
-    );
-    setCurrentValue('');
-  };
-
-  const onCurrentValueChange = (v: string) => {
-    setCurrentValue(v);
-  };
-
-  const onUpdateTask = (id: string, original: ITask) => {
-    setTaskList(old =>
-      produce(old, draft => {
-        const index = draft.findIndex(item => item.id === id);
-        draft[index].status = original.status === 1 ? 2 : 1;
-      }),
-    );
-  };
-
-  const onCollapsedChange = (key: number) => {
-    setCollapsed(old => {
-      return {
-        ...old,
-        [key]: !old[key],
-      };
-    });
-  };
-
-  const listData = useMemo(() => {
-    return taskList.reduce(
-      (acc, cur) => {
-        if (cur.status === 1 && !collapsed[1]) {
-          acc[0].data.push(cur);
-        } else if (cur.status === 2 && !collapsed[2]) {
-          acc[1].data.push(cur);
-        }
-        return acc;
-      },
-      [
-        {title: 'Pendding', status: 1, data: [] as ITask[]},
-        {title: 'Done', status: 2, data: [] as ITask[]},
-      ],
-    );
-  }, [taskList, collapsed]);
+  const onPressHandle = (type: string) => {};
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={publicStyles.inline}>
-            <TouchableOpacity
-              onPress={jumpToList}
-              style={[styles.inline, publicStyles.inline]}>
-              <MaterialIcon name="chevron-left" size={20} color="#000" />
-              <Text>列表</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={publicStyles.inline}>
-            <MaterialIcon
-              style={styles.mr8}
-              name="lightbulb-on-outline"
-              size={20}
-              color="#000"
-            />
-            <MaterialIcon name="dots-horizontal" size={20} color="#000" />
-          </View>
-        </View>
-        <View style={styles.content}>
-          <Text style={styles.title}>{route.params.name}</Text>
-          <Text style={styles.subtitle}>{dayjs().format('MM-DD dddd')}</Text>
-          <SectionList
-            style={styles.list}
-            sections={listData}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <View
-                style={[styles.listItem, publicStyles.inline]}
-                key={item.id}>
-                <CheckBoxSelf
-                  checked={item.status === 2}
-                  onPress={() => onUpdateTask(item.id, item)}
-                />
-                <Text>{item.content}</Text>
-              </View>
-            )}
-            renderSectionHeader={({section}) => (
-              <TouchableWithoutFeedback
-                onPress={() => onCollapsedChange(section.status)}>
-                <View style={[styles.listTitle, publicStyles.inline]}>
-                  <MaterialIcon
-                    name={
-                      collapsed[section.status]
-                        ? 'chevron-right'
-                        : 'chevron-down'
-                    }
-                    size={20}
-                    color="#fff"
-                  />
-                  <Text style={styles.listTitleText}>{section.title}</Text>
-                </View>
-              </TouchableWithoutFeedback>
-            )}
-          />
-          {/* <FlatList
-            data={taskList.filter(({status}) => status === 1)}
-            style={styles.list}
-            renderItem={({item}) => (
-              <View
-                style={[styles.listItem, publicStyles.inline]}
-                key={item.id}>
-                <CheckBoxSelf onPress={() => onUpdateTask(item.id)} />
-                <Text>{item.content}</Text>
-              </View>
-            )}
-          /> */}
-        </View>
-        <View style={styles.footerBar}>
-          <View style={[styles.foot, publicStyles.inline]}>
-            <MaterialIcon name="plus" size={20} color="#fff" />
-            <TextInput
-              value={currentValue}
-              style={styles.addTaskInput}
-              onChangeText={onCurrentValueChange}
-              placeholder="添加任务"
-              placeholderTextColor="#fff"
-              onSubmitEditing={onCreatTask}
-            />
-          </View>
+    <View style={styles.container}>
+      <View style={[styles.step]}>
+        <View style={[publicStyles.inline]}>
+          <CheckBoxSelf onPress={onFinishedtask} />
+          <Text>{route.params.content}</Text>
         </View>
       </View>
-    </SafeAreaView>
+
+      <Divider />
+      <TouchableHighlight
+        underlayColor="rgba(173, 216, 230, .3)"
+        onPress={() => onPressHandle('add')}>
+        <View style={[styles.item, publicStyles.inline]}>
+          <MaterialIcon
+            style={styles.mr8}
+            name="weather-sunny"
+            size={20}
+            color="#333"
+          />
+          <Text>添加到“我的一天”</Text>
+        </View>
+      </TouchableHighlight>
+      <Divider />
+      <TouchableHighlight
+        underlayColor="rgba(173, 216, 230, .3)"
+        onPress={() => onPressHandle('remember')}>
+        <View style={[styles.item, publicStyles.inline]}>
+          <MaterialIcon style={styles.mr8} name="bell" size={20} color="#333" />
+          <Text>提醒我</Text>
+        </View>
+      </TouchableHighlight>
+      <TouchableHighlight
+        underlayColor="rgba(173, 216, 230, .3)"
+        onPress={() => onPressHandle('schedule')}>
+        <View style={[styles.item, publicStyles.inline]}>
+          <MaterialIcon
+            style={styles.mr8}
+            name="calendar"
+            size={20}
+            color="#333"
+          />
+          <Text>添加截止日期</Text>
+        </View>
+      </TouchableHighlight>
+      <TouchableHighlight
+        underlayColor="rgba(173, 216, 230, .3)"
+        onPress={() => onPressHandle('repeat')}>
+        <View style={[styles.item, publicStyles.inline]}>
+          <MaterialIcon
+            style={styles.mr8}
+            name="repeat"
+            size={20}
+            color="#333"
+          />
+          <Text>重复</Text>
+        </View>
+      </TouchableHighlight>
+      <Divider />
+      <TouchableHighlight
+        underlayColor="rgba(173, 216, 230, .3)"
+        onPress={() => onPressHandle('upload')}>
+        <View style={[styles.item, publicStyles.inline]}>
+          <MaterialIcon
+            style={styles.mr8}
+            name="link-variant"
+            size={20}
+            color="#333"
+          />
+          <Text>添加文件</Text>
+        </View>
+      </TouchableHighlight>
+      <Divider />
+
+      <TextInput
+        style={styles.remark}
+        placeholder="添加备注"
+        multiline
+        placeholderTextColor="#999"
+      />
+      <Divider />
+
+      <View style={[styles.footBar, publicStyles.inline]}>
+        <Text style={styles.footBarText}>创建于6小时前</Text>
+        <MaterialIcon
+          style={styles.footBarDelete}
+          name="delete"
+          size={20}
+          color="#333"
+        />
+      </View>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(50, 180, 200, 1)',
+    backgroundColor: '#fff',
+    position: 'relative',
   },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 8,
-    height: 40,
+  step: {
+    paddingVertical: 16,
+    paddingHorizontal: 4,
   },
-  inline: {
-    height: '100%',
-    width: 80,
-  },
-  content: {
-    paddingHorizontal: 8,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    fontSize: 18,
-  },
-  list: {
-    height: Dimensions.get('window').height - 250,
-  },
-  listTitle: {
-    marginVertical: 8,
-    padding: 8,
-    width: 100,
-    backgroundColor: 'rgba(0, 0, 0, .2)',
-    borderRadius: 4,
-  },
-  listTitleText: {
-    color: '#fff',
-  },
-  listItem: {
-    height: 50,
-    backgroundColor: 'rgba(255, 255, 255, .8)',
-    marginVertical: 4,
-    marginHorizontal: 0,
-    borderRadius: 6,
-    color: '#fff',
-  },
-  footerBar: {
-    position: 'absolute',
-    bottom: 8,
-    left: 0,
-    width: '100%',
-    paddingHorizontal: 8,
-  },
-  foot: {
-    paddingHorizontal: 8,
-    backgroundColor: 'rgba(0,0,0,.2)',
-    borderRadius: 4,
-  },
-  addTaskInput: {
-    height: 40,
-    paddingHorizontal: 8,
-    flex: 1,
-    color: '#fff',
+  item: {
+    height: 60,
+    paddingHorizontal: 16,
   },
   mr8: {
     marginRight: 8,
   },
+  remark: {
+    padding: 16,
+    height: 100,
+  },
+  footBar: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    width: '100%',
+    height: 40,
+  },
+  footBarText: {
+    width: '100%',
+    textAlign: 'center',
+    color: '#999',
+  },
+  footBarDelete: {
+    position: 'absolute',
+    right: 20,
+    bottom: '50%',
+    transform: [{translateY: 10}],
+  },
 });
+
+export default DetailsScreen;

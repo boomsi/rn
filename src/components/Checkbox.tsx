@@ -5,13 +5,15 @@ import {MaterialIcon} from './MaterialIcon';
 const CheckBoxSelf = ({
   onPress,
   checked,
+  style,
 }: {
   onPress: () => void;
   checked?: boolean;
+  style?: object
 }) => {
   return (
     <CheckBox
-      containerStyle={styles.checkbox}
+      containerStyle={[styles.checkbox, style]}
       checked={!!checked}
       onPress={onPress}
       checkedIcon={
@@ -27,6 +29,9 @@ const CheckBoxSelf = ({
 const styles = StyleSheet.create({
   checkbox: {
     backgroundColor: 'transparent',
+    padding: 0,
+    // marginLeft: 0,
+    // marginRight: 0
   },
 });
 
