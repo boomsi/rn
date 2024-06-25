@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,6 +8,10 @@ import {
   Touchable,
   TouchableOpacity,
   Text,
+  StatusBar,
+  SectionList,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -16,11 +20,12 @@ import {produce} from 'immer';
 import {MaterialIcon} from 'app/components/MaterialIcon';
 import publicStyles from 'app/styles';
 import dayjs from 'dayjs';
-import {Button, ListItem} from '@rneui/themed';
+import CheckBoxSelf from 'app/components/Checkbox';
 
 export type ITask = {
   id: string;
   content: string;
+  status: 1 | 2; // 1 pendding 2 done
   created_at: string;
   updated_at: string;
 };
@@ -34,6 +39,12 @@ export default function DetailsScreen({
 }) {
   const [currentValue, setCurrentValue] = useState<string>('');
   const [taskList, setTaskList] = useState<ITask[]>([]);
+  const [collapsed, setCollapsed] = useState<{
+    [key: number]: boolean;
+  }>({
+    1: false,
+    2: false,
+  });
 
   const jumpToList = () => {
     navigation.goBack();
@@ -45,6 +56,7 @@ export default function DetailsScreen({
         draft.push({
           id: uuidv4(),
           content: currentValue,
+          status: 1,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         });
@@ -56,6 +68,41 @@ export default function DetailsScreen({
   const onCurrentValueChange = (v: string) => {
     setCurrentValue(v);
   };
+
+  const onUpdateTask = (id: string, original: ITask) => {
+    setTaskList(old =>
+      produce(old, draft => {
+        const index = draft.findIndex(item => item.id === id);
+        draft[index].status = original.status === 1 ? 2 : 1;
+      }),
+    );
+  };
+
+  const onCollapsedChange = (key: number) => {
+    setCollapsed(old => {
+      return {
+        ...old,
+        [key]: !old[key],
+      };
+    });
+  };
+
+  const listData = useMemo(() => {
+    return taskList.reduce(
+      (acc, cur) => {
+        if (cur.status === 1 && !collapsed[1]) {
+          acc[0].data.push(cur);
+        } else if (cur.status === 2 && !collapsed[2]) {
+          acc[1].data.push(cur);
+        }
+        return acc;
+      },
+      [
+        {title: 'Pendding', status: 1, data: [] as ITask[]},
+        {title: 'Done', status: 2, data: [] as ITask[]},
+      ],
+    );
+  }, [taskList, collapsed]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -82,15 +129,51 @@ export default function DetailsScreen({
         <View style={styles.content}>
           <Text style={styles.title}>{route.params.name}</Text>
           <Text style={styles.subtitle}>{dayjs().format('MM-DD dddd')}</Text>
-          <FlatList
-            data={taskList}
+          <SectionList
             style={styles.list}
+            sections={listData}
+            keyExtractor={item => item.id}
             renderItem={({item}) => (
-              <View style={styles.listItem} key={item.id}>
+              <View
+                style={[styles.listItem, publicStyles.inline]}
+                key={item.id}>
+                <CheckBoxSelf
+                  checked={item.status === 2}
+                  onPress={() => onUpdateTask(item.id, item)}
+                />
                 <Text>{item.content}</Text>
               </View>
             )}
+            renderSectionHeader={({section}) => (
+              <TouchableWithoutFeedback
+                onPress={() => onCollapsedChange(section.status)}>
+                <View style={[styles.listTitle, publicStyles.inline]}>
+                  <MaterialIcon
+                    name={
+                      collapsed[section.status]
+                        ? 'chevron-right'
+                        : 'chevron-down'
+                    }
+                    size={20}
+                    color="#fff"
+                  />
+                  <Text style={styles.listTitleText}>{section.title}</Text>
+                </View>
+              </TouchableWithoutFeedback>
+            )}
           />
+          {/* <FlatList
+            data={taskList.filter(({status}) => status === 1)}
+            style={styles.list}
+            renderItem={({item}) => (
+              <View
+                style={[styles.listItem, publicStyles.inline]}
+                key={item.id}>
+                <CheckBoxSelf onPress={() => onUpdateTask(item.id)} />
+                <Text>{item.content}</Text>
+              </View>
+            )}
+          /> */}
         </View>
         <View style={styles.footerBar}>
           <View style={[styles.foot, publicStyles.inline]}>
@@ -139,10 +222,21 @@ const styles = StyleSheet.create({
   list: {
     height: Dimensions.get('window').height - 250,
   },
+  listTitle: {
+    marginVertical: 8,
+    padding: 8,
+    width: 100,
+    backgroundColor: 'rgba(0, 0, 0, .2)',
+    borderRadius: 4,
+  },
+  listTitleText: {
+    color: '#fff',
+  },
   listItem: {
-    padding: 16,
+    height: 50,
     backgroundColor: 'rgba(255, 255, 255, .8)',
-    margin: 4,
+    marginVertical: 4,
+    marginHorizontal: 0,
     borderRadius: 6,
     color: '#fff',
   },
