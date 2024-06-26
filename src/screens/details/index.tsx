@@ -1,7 +1,13 @@
+import {RouteProp} from '@react-navigation/native';
 import {Divider} from '@rneui/base';
 import CheckBoxSelf from 'app/components/Checkbox';
 import {MaterialIcon} from 'app/components/MaterialIcon';
 import publicStyles from 'app/styles';
+import {Task} from 'app/utils/schema';
+import {produce} from 'immer';
+import {useCallback, useRef, useState} from 'react';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {
   View,
@@ -11,17 +17,40 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
-const DetailsScreen = ({route}: any) => {
+const DetailsScreen = ({
+  route: {params},
+}: {
+  route: RouteProp<{params: Task}, 'params'>;
+}) => {
+  const [currentDetail, setCurrentDetail] = useState<Task>(params);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
   const onFinishedtask = () => {};
 
-  const onPressHandle = (type: string) => {};
+  const onPressHandle = (type: string) => {
+    switch (type) {
+      case 'add':
+        setCurrentDetail(old =>
+          produce(old, draft => {
+            draft.today = !draft.today;
+          }),
+        );
+        break;
+      case 'remind':
+        break;
+    }
+  };
 
   return (
     <View style={styles.container}>
       <View style={[styles.step]}>
         <View style={[publicStyles.inline]}>
           <CheckBoxSelf onPress={onFinishedtask} />
-          <Text>{route.params.content}</Text>
+          <Text>{currentDetail.content}</Text>
         </View>
       </View>
 
@@ -34,20 +63,26 @@ const DetailsScreen = ({route}: any) => {
             style={styles.mr8}
             name="weather-sunny"
             size={20}
-            color="#333"
+            color={currentDetail.today ? 'blue' : '#333'}
           />
-          <Text>添加到“我的一天”</Text>
+          {currentDetail.today ? (
+            <Text style={publicStyles.active}>已添加到“我的一天”</Text>
+          ) : (
+            <Text>添加到“我的一天”</Text>
+          )}
         </View>
       </TouchableHighlight>
       <Divider />
+
       <TouchableHighlight
         underlayColor="rgba(173, 216, 230, .3)"
-        onPress={() => onPressHandle('remember')}>
+        onPress={() => onPressHandle('remind')}>
         <View style={[styles.item, publicStyles.inline]}>
           <MaterialIcon style={styles.mr8} name="bell" size={20} color="#333" />
           <Text>提醒我</Text>
         </View>
       </TouchableHighlight>
+
       <TouchableHighlight
         underlayColor="rgba(173, 216, 230, .3)"
         onPress={() => onPressHandle('schedule')}>
@@ -61,6 +96,7 @@ const DetailsScreen = ({route}: any) => {
           <Text>添加截止日期</Text>
         </View>
       </TouchableHighlight>
+
       <TouchableHighlight
         underlayColor="rgba(173, 216, 230, .3)"
         onPress={() => onPressHandle('repeat')}>
@@ -75,6 +111,7 @@ const DetailsScreen = ({route}: any) => {
         </View>
       </TouchableHighlight>
       <Divider />
+
       <TouchableHighlight
         underlayColor="rgba(173, 216, 230, .3)"
         onPress={() => onPressHandle('upload')}>
@@ -107,6 +144,12 @@ const DetailsScreen = ({route}: any) => {
           color="#333"
         />
       </View>
+
+      <BottomSheet ref={bottomSheetRef} onChange={handleSheetChanges}>
+        <BottomSheetView>
+          <Text>Awesome 🎉</Text>
+        </BottomSheetView>
+      </BottomSheet>
     </View>
   );
 };

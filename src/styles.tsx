@@ -6,6 +6,9 @@ const publicStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  active: {
+    color: 'blue'
+  }
 });
 
 export default publicStyles;

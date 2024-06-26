@@ -3,14 +3,10 @@ import {
   StyleSheet,
   View,
   TextInput,
-  FlatList,
   Dimensions,
-  Touchable,
   TouchableOpacity,
   Text,
-  StatusBar,
   SectionList,
-  TouchableHighlight,
   TouchableWithoutFeedback,
 } from 'react-native';
 
@@ -23,14 +19,6 @@ import dayjs from 'dayjs';
 import CheckBoxSelf from 'app/components/Checkbox';
 import {Task} from 'app/utils/schema';
 
-export type ITask = {
-  id: string;
-  content: string;
-  status: 1 | 2; // 1 pendding 2 done
-  created_at: string;
-  updated_at: string;
-};
-
 export default function ListScreen({
   navigation,
   route,
@@ -39,7 +27,7 @@ export default function ListScreen({
   route: any;
 }) {
   const [currentValue, setCurrentValue] = useState<string>('');
-  const [taskList, setTaskList] = useState<ITask[]>([]);
+  const [taskList, setTaskList] = useState<Task[]>([]);
   const [collapsed, setCollapsed] = useState<{
     [key: number]: boolean;
   }>({
@@ -64,7 +52,7 @@ export default function ListScreen({
     setCurrentValue(v);
   };
 
-  const onUpdateTask = (id: string, original: ITask) => {
+  const onUpdateTask = (id: string, original: Task) => {
     setTaskList(old =>
       produce(old, draft => {
         const index = draft.findIndex(item => item.id === id);
@@ -82,7 +70,7 @@ export default function ListScreen({
     });
   };
 
-  const onJumpToDetails = (item: ITask) => {
+  const onJumpToDetails = (item: Task) => {
     navigation.navigate('Details', item);
   };
 
@@ -97,8 +85,8 @@ export default function ListScreen({
         return acc;
       },
       [
-        {title: '未完成', status: 1, data: [] as ITask[]},
-        {title: '已完成', status: 2, data: [] as ITask[]},
+        {title: '未完成', status: 1, data: [] as Task[]},
+        {title: '已完成', status: 2, data: [] as Task[]},
       ],
     );
   }, [taskList, collapsed]);
