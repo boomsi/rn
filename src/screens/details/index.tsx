@@ -16,6 +16,7 @@ import {
   TouchableHighlight,
   Dimensions,
 } from 'react-native';
+import BottomModal from 'app/components/BottomModal';
 
 const DetailsScreen = ({
   route: {params},
@@ -159,7 +160,7 @@ const DetailsScreen = ({
         />
       </View>
 
-      <BottomSheet
+      {/* <BottomSheet
         index={bottomSheetOptions.status}
         ref={bottomSheetRef}
         onChange={handleSheetChanges}
@@ -171,7 +172,15 @@ const DetailsScreen = ({
         <BottomSheetView>
           <Text>Awesome 🎉</Text>
         </BottomSheetView>
-      </BottomSheet>
+      </BottomSheet> */}
+      <BottomModal
+        index={bottomSheetOptions.status}
+        // ref={bottomSheetRef}
+        onChange={handleSheetChanges}
+        snapPoints={[300]}
+        enablePanDownToClose>
+        <Text>Awesome??? 🎉</Text>
+      </BottomModal>
     </View>
   );
 };
