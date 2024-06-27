@@ -7,7 +7,6 @@ import {Task} from 'app/utils/schema';
 import {produce} from 'immer';
 import {useCallback, useRef, useState} from 'react';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {
   View,
@@ -15,6 +14,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableHighlight,
+  Dimensions,
 } from 'react-native';
 
 const DetailsScreen = ({
@@ -24,9 +24,19 @@ const DetailsScreen = ({
 }) => {
   const [currentDetail, setCurrentDetail] = useState<Task>(params);
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const [bottomSheetOptions, setBottomSheetOptions] = useState<{
+    type: string | null;
+    status: -1 | 0;
+  }>({
+    type: null,
+    status: -1,
+  });
 
   const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
+    setBottomSheetOptions(old => ({
+      ...old,
+      status: index as -1 | 0,
+    }));
   }, []);
 
   const onFinishedtask = () => {};
@@ -41,6 +51,10 @@ const DetailsScreen = ({
         );
         break;
       case 'remind':
+        setBottomSheetOptions({
+          type: 'remind',
+          status: 0,
+        });
         break;
     }
   };
@@ -145,7 +159,15 @@ const DetailsScreen = ({
         />
       </View>
 
-      <BottomSheet ref={bottomSheetRef} onChange={handleSheetChanges}>
+      <BottomSheet
+        index={bottomSheetOptions.status}
+        ref={bottomSheetRef}
+        onChange={handleSheetChanges}
+        snapPoints={[300]}
+        // enableDynamicSizing
+        enablePanDownToClose
+        handleStyle={{backgroundColor: '#fff'}}
+        handleIndicatorStyle={{backgroundColor: '#38f'}}>
         <BottomSheetView>
           <Text>Awesome 🎉</Text>
         </BottomSheetView>
