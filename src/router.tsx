@@ -4,6 +4,7 @@ const Stack = createNativeStackNavigator();
 import HomeScreen from 'app/screens/home';
 import ListScreen from 'app/screens/list';
 import DetailsScreen from 'app/screens/details';
+import ExampleScreen from './screens/example';
 
 const routes: Parameters<typeof Stack.Screen>[number][] = [
   {
@@ -34,7 +35,7 @@ const routes: Parameters<typeof Stack.Screen>[number][] = [
   },
   {
     name: 'Details',
-    component: DetailsScreen,
+    component: DetailsScreen as any,
     options: {
       // headerShown: false,
       headerStyle: {
@@ -43,6 +44,11 @@ const routes: Parameters<typeof Stack.Screen>[number][] = [
       headerTintColor: '#000',
       title: '',
     },
+  },
+
+  {
+    name: 'Example',
+    component: ExampleScreen,
   },
 ];
 

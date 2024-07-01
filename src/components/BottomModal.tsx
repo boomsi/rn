@@ -1,61 +1,57 @@
-import {FC} from 'react';
-import BottomSheet, {
-  BottomSheetProps,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import {FC, forwardRef} from 'react';
+
 import {Text} from '@rneui/base';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {
+  BottomSheetModal,
+  BottomSheetView,
+  BottomSheetModalProvider,
+  BottomSheetModalProps,
+} from '@gorhom/bottom-sheet';
 
-export interface IProps extends BottomSheetProps {
-    children: React.ReactNode;
+export interface IBottomModalProps extends BottomSheetModalProps {
+  children: React.ReactNode;
+  ref?: any;
 }
 
 const defaultProps = {
-  index: -1,
+  index: 1,
   snapPoints: [300],
-  // enableDynamicSizing: true,
+  enableDynamicSizing: true,
   enablePanDownToClose: true,
   handleStyle: {backgroundColor: '#fff'},
   handleIndicatorStyle: {backgroundColor: '#38f'},
 };
 
-const BottomModal: FC<IProps> = ({children, onChange, ...attrs}) => {
-  return (
-    <>
-      {/* <TouchableWithoutFeedback onPress={() => onChange?.(-1)}> */}
-      <View style={[styles.mask, attrs.index === -1 && styles.maskHide]}></View>
-      {/* </TouchableWithoutFeedback> */}
-      <BottomSheet
-        // ref={bottomSheetRef}
-        {...Object.assign({}, defaultProps, attrs)}
-        snapPoints={[300]}
-        onChange={onChange}
-        // enableDynamicSizing
-        enablePanDownToClose
-        handleStyle={{backgroundColor: '#fff'}}
-        handleIndicatorStyle={{backgroundColor: '#38f'}}>
-        <BottomSheetView>
-          {children}
-        </BottomSheetView>
-      </BottomSheet>
-    </>
-  );
-};
+const BottomModal: FC<IBottomModalProps> = forwardRef(
+  ({children, onChange, ...attrs}, ref) => {
+    return (
+      <BottomSheetModalProvider>
+        <BottomSheetModal
+          style={styles.sheetContainer}
+          ref={ref}
+          {...Object.assign({}, defaultProps, attrs)}
+          onChange={onChange}
+          handleStyle={{backgroundColor: '#fff'}}
+          handleIndicatorStyle={{backgroundColor: '#38f'}}>
+          <BottomSheetView>{children}</BottomSheetView>
+        </BottomSheetModal>
+      </BottomSheetModalProvider>
+    );
+  },
+);
 
 console.log(Dimensions.get('window').height);
 
 const styles = StyleSheet.create({
-  mask: {
-    backgroundColor: 'rgba(0,0,0,.3)',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-    position: 'absolute',
-    left: 0,
-    top: 0,
-  },
-  maskHide: {
-    display: 'none',
+  sheetContainer: {
+    shadowColor: '#ccc',
+    shadowOffset: {
+      width: 0,
+      height: -8,
+    },
+    shadowOpacity: 0.25,
   },
 });
 export default BottomModal;

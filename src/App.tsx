@@ -19,6 +19,7 @@ function App(): React.JSX.Element {
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Home"
+          // initialRouteName="Example"
           screenOptions={{
             headerStyle: {
               backgroundColor: '#38f',

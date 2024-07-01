@@ -6,7 +6,7 @@ import publicStyles from 'app/styles';
 import {Task} from 'app/utils/schema';
 import {produce} from 'immer';
 import {useCallback, useRef, useState} from 'react';
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 import {
   View,
@@ -16,7 +16,10 @@ import {
   TouchableHighlight,
   Dimensions,
 } from 'react-native';
-import BottomModal from 'app/components/BottomModal';
+
+import RemindBottomModal from './RemindBottomModal';
+import ScheduleBottomModal from './ScheduleBottomModal';
+import RepeatBottomModal from './RepeatBottomModal';
 
 const DetailsScreen = ({
   route: {params},
@@ -24,23 +27,17 @@ const DetailsScreen = ({
   route: RouteProp<{params: Task}, 'params'>;
 }) => {
   const [currentDetail, setCurrentDetail] = useState<Task>(params);
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const [bottomSheetOptions, setBottomSheetOptions] = useState<{
-    type: string | null;
-    status: -1 | 0;
-  }>({
-    type: null,
-    status: -1,
-  });
+  const remindSheetRef = useRef<BottomSheetModal>(null);
+  const repeatSheetRef = useRef<BottomSheetModal>(null);
+  const scheduleSheetRef = useRef<BottomSheetModal>(null);
+  const [bottomModalType, setBottomModalType] = useState<string>('remind');
 
   const handleSheetChanges = useCallback((index: number) => {
-    setBottomSheetOptions(old => ({
-      ...old,
-      status: index as -1 | 0,
-    }));
+    index === -1 && setBottomModalType('');
   }, []);
 
   const onFinishedtask = () => {};
+  const onOptionsHandle = () => {};
 
   const onPressHandle = (type: string) => {
     switch (type) {
@@ -52,10 +49,15 @@ const DetailsScreen = ({
         );
         break;
       case 'remind':
-        setBottomSheetOptions({
-          type: 'remind',
-          status: 0,
-        });
+      case 'schedule':
+      case 'repeat':
+        scheduleSheetRef.current?.dismiss();
+        repeatSheetRef.current?.dismiss();
+        remindSheetRef.current?.dismiss();
+        setBottomModalType(type);
+        type === 'remind' && remindSheetRef.current!.present();
+        type === 'schedule' && scheduleSheetRef.current!.present();
+        type === 'repeat' && repeatSheetRef.current!.present();
         break;
     }
   };
@@ -160,27 +162,26 @@ const DetailsScreen = ({
         />
       </View>
 
-      {/* <BottomSheet
-        index={bottomSheetOptions.status}
-        ref={bottomSheetRef}
+      <RemindBottomModal
+        index={bottomModalType === 'remind' ? 0 : -1}
+        ref={remindSheetRef}
         onChange={handleSheetChanges}
-        snapPoints={[300]}
-        // enableDynamicSizing
-        enablePanDownToClose
-        handleStyle={{backgroundColor: '#fff'}}
-        handleIndicatorStyle={{backgroundColor: '#38f'}}>
-        <BottomSheetView>
-          <Text>Awesome 🎉</Text>
-        </BottomSheetView>
-      </BottomSheet> */}
-      <BottomModal
-        index={bottomSheetOptions.status}
-        // ref={bottomSheetRef}
+        onOptionsHandle={onOptionsHandle}
+      />
+
+      <ScheduleBottomModal
+        index={bottomModalType === 'schedule' ? 0 : -1}
+        ref={scheduleSheetRef}
         onChange={handleSheetChanges}
-        snapPoints={[300]}
-        enablePanDownToClose>
-        <Text>Awesome??? 🎉</Text>
-      </BottomModal>
+        onOptionsHandle={onOptionsHandle}
+      />
+
+      <RepeatBottomModal
+        index={bottomModalType === 'repeat' ? 0 : -1}
+        ref={repeatSheetRef}
+        onChange={handleSheetChanges}
+        onOptionsHandle={onOptionsHandle}
+      />
     </View>
   );
 };
