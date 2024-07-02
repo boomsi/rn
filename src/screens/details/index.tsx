@@ -38,6 +38,7 @@ const DetailsScreen = ({
   }, []);
 
   const onFinishedtask = () => {};
+
   const onOptionsHandle = (value: {time: string; date: string}) => {
     setCurrentDetail(old =>
       produce(old, draft => {
@@ -47,6 +48,17 @@ const DetailsScreen = ({
         };
       }),
     );
+    switch (bottomModalType) {
+      case 'remind':
+        remindSheetRef.current?.dismiss();
+        break;
+      case 'schedule':
+        scheduleSheetRef.current?.dismiss();
+        break;
+      case 'repeat':
+        repeatSheetRef.current?.dismiss();
+        break;
+    }
   };
 
   const onPressHandle = (type: string) => {
