@@ -7,26 +7,31 @@ const timeSelection = [
   {
     title: '今日晚些时候',
     key: 'now',
-    value: dayjs().format('dddd mm:ss'),
+    time: dayjs().format('dddd mm:ss'),
+    date: '今日',
   },
   {
     title: '明天',
     key: 'tomorrow',
-    value: dayjs().format('dddd mm:ss'),
+    time: dayjs().format('dddd mm:ss'),
+    date: '明天',
   },
   {
     title: '下周',
     key: 'week',
-    value: dayjs().format('dddd mm:ss'),
+    time: dayjs().format('dddd mm:ss'),
+    date: '下周',
   },
   {
     title: '选择日期和时间',
     key: 'custom',
+    time: '23:59',
+    date: '7/26',
   },
 ];
 
 interface IProps extends Omit<IBottomModalProps, 'children'> {
-  onOptionsHandle: (key: string) => void;
+  onOptionsHandle: (value: {time: string; date: string}) => void;
 }
 
 const RemindBottomModal: React.FC<IProps> = forwardRef(
@@ -46,8 +51,14 @@ const RemindBottomModal: React.FC<IProps> = forwardRef(
               <TouchableHighlight
                 underlayColor="#ccc"
                 key={item.key}
-                onPress={() => onOptionsHandle(item.key)}>
-                <Text style={styles.contentItem}>{item.title}</Text>
+                onPress={() => onOptionsHandle(item)}>
+                <View style={styles.contentItem}>
+                  <Text style={styles.contentItemText}>{item.title}</Text>
+                  <Text
+                    style={[styles.contentItemText, styles.contentItemOther]}>
+                    {item.date} {item.time}
+                  </Text>
+                </View>
               </TouchableHighlight>
             ))}
           </View>
@@ -68,8 +79,16 @@ const styles = StyleSheet.create({
   },
   contentItem: {
     paddingHorizontal: 16,
-    lineHeight: 50,
     height: 50,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  contentItemText: {
+    lineHeight: 50,
+  },
+  contentItemOther: {
+    color: '#999',
   },
 });
 

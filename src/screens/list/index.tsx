@@ -71,7 +71,7 @@ export default function ListScreen({
   };
 
   const onJumpToDetails = (item: Task) => {
-    navigation.navigate('Details', item);
+    navigation.navigate('Details', {...item});
   };
 
   const listData = useMemo(() => {

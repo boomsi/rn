@@ -14,7 +14,6 @@ import {
   StyleSheet,
   TextInput,
   TouchableHighlight,
-  Dimensions,
 } from 'react-native';
 
 import RemindBottomModal from './RemindBottomModal';
@@ -30,14 +29,25 @@ const DetailsScreen = ({
   const remindSheetRef = useRef<BottomSheetModal>(null);
   const repeatSheetRef = useRef<BottomSheetModal>(null);
   const scheduleSheetRef = useRef<BottomSheetModal>(null);
-  const [bottomModalType, setBottomModalType] = useState<string>('remind');
+  const [bottomModalType, setBottomModalType] = useState<
+    keyof Pick<Task, 'remind' | 'repeat' | 'schedule'> | null
+  >(null);
 
   const handleSheetChanges = useCallback((index: number) => {
-    index === -1 && setBottomModalType('');
+    index === -1 && setBottomModalType(null);
   }, []);
 
   const onFinishedtask = () => {};
-  const onOptionsHandle = () => {};
+  const onOptionsHandle = (value: {time: string; date: string}) => {
+    setCurrentDetail(old =>
+      produce(old, draft => {
+        draft[bottomModalType!] = {
+          date: value.date,
+          time: value.time,
+        };
+      }),
+    );
+  };
 
   const onPressHandle = (type: string) => {
     switch (type) {
@@ -95,8 +105,24 @@ const DetailsScreen = ({
         underlayColor="rgba(173, 216, 230, .3)"
         onPress={() => onPressHandle('remind')}>
         <View style={[styles.item, publicStyles.inline]}>
-          <MaterialIcon style={styles.mr8} name="bell" size={20} color="#333" />
-          <Text>提醒我</Text>
+          <MaterialIcon
+            style={styles.mr8}
+            name="bell"
+            size={20}
+            color={currentDetail.remind?.date ? 'blue' : '#333'}
+          />
+          {currentDetail.remind?.date ? (
+            <View>
+              <Text style={publicStyles.active}>
+                {currentDetail.remind.time}
+              </Text>
+              <Text style={publicStyles.active}>
+                {currentDetail.remind.date}
+              </Text>
+            </View>
+          ) : (
+            <Text>提醒我</Text>
+          )}
         </View>
       </TouchableHighlight>
 
@@ -108,9 +134,20 @@ const DetailsScreen = ({
             style={styles.mr8}
             name="calendar"
             size={20}
-            color="#333"
+            color={currentDetail.schedule?.date ? 'blue' : '#333'}
           />
-          <Text>添加截止日期</Text>
+          {currentDetail.schedule?.date ? (
+            <View>
+              <Text style={publicStyles.active}>
+                {currentDetail.schedule.time}
+              </Text>
+              <Text style={publicStyles.active}>
+                {currentDetail.schedule.date}
+              </Text>
+            </View>
+          ) : (
+            <Text>添加截止日期</Text>
+          )}
         </View>
       </TouchableHighlight>
 
@@ -122,9 +159,20 @@ const DetailsScreen = ({
             style={styles.mr8}
             name="repeat"
             size={20}
-            color="#333"
+            color={currentDetail.repeat?.date ? 'blue' : '#333'}
           />
-          <Text>重复</Text>
+          {currentDetail.repeat?.date ? (
+            <View>
+              <Text style={publicStyles.active}>
+                {currentDetail.repeat.time}
+              </Text>
+              <Text style={publicStyles.active}>
+                {currentDetail.repeat.date}
+              </Text>
+            </View>
+          ) : (
+            <Text>重复</Text>
+          )}
         </View>
       </TouchableHighlight>
       <Divider />
@@ -163,22 +211,22 @@ const DetailsScreen = ({
       </View>
 
       <RemindBottomModal
-        index={bottomModalType === 'remind' ? 0 : -1}
         ref={remindSheetRef}
+        index={bottomModalType === 'remind' ? 0 : -1}
         onChange={handleSheetChanges}
         onOptionsHandle={onOptionsHandle}
       />
 
       <ScheduleBottomModal
-        index={bottomModalType === 'schedule' ? 0 : -1}
         ref={scheduleSheetRef}
+        index={bottomModalType === 'schedule' ? 0 : -1}
         onChange={handleSheetChanges}
         onOptionsHandle={onOptionsHandle}
       />
 
       <RepeatBottomModal
-        index={bottomModalType === 'repeat' ? 0 : -1}
         ref={repeatSheetRef}
+        index={bottomModalType === 'repeat' ? 0 : -1}
         onChange={handleSheetChanges}
         onOptionsHandle={onOptionsHandle}
       />

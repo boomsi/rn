@@ -7,38 +7,50 @@ const repeatSelection = [
   {
     title: '每天',
     key: 'day',
+    date: 'day',
+    time: 'day',
   },
   {
     title: '每周',
     key: 'week',
+    date: 'week',
+    time: 'week',
   },
   {
     title: '工作日',
     key: 'workday',
+    date: 'workday',
+    time: 'workday',
   },
   {
     title: '每月',
     key: 'month',
+    date: 'month',
+    time: 'month',
   },
   {
     title: '每年',
     key: 'year',
+    date: 'year',
+    time: 'year',
   },
   {
     title: '自定义',
     key: 'custom',
+    time: '22',
+    date: '22',
   },
 ];
 
 interface IProps extends Omit<IBottomModalProps, 'children'> {
-  onOptionsHandle: (key: string) => void;
+  onOptionsHandle: (key: {time: string; date: string}) => void;
 }
 
 const RepeatBottomModal: React.FC<IProps> = forwardRef(
   ({onOptionsHandle, ...props}, ref) => {
     return (
       <BottomModal
-        snapPoints={[350, 500]}
+        snapPoints={[400]}
         enableDynamicSizing
         enablePanDownToClose
         ref={ref}
@@ -50,7 +62,7 @@ const RepeatBottomModal: React.FC<IProps> = forwardRef(
               <TouchableHighlight
                 underlayColor="#ccc"
                 key={item.key}
-                onPress={() => onOptionsHandle(item.key)}>
+                onPress={() => onOptionsHandle(item)}>
                 <Text style={styles.contentItem}>{item.title}</Text>
               </TouchableHighlight>
             ))}
