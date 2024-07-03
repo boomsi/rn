@@ -14,11 +14,13 @@ import {
   StyleSheet,
   TextInput,
   TouchableHighlight,
+  ActionSheetIOS,
 } from 'react-native';
 
 import RemindBottomModal from './RemindBottomModal';
 import ScheduleBottomModal from './ScheduleBottomModal';
 import RepeatBottomModal from './RepeatBottomModal';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const DetailsScreen = ({
   route: {params},
@@ -82,6 +84,20 @@ const DetailsScreen = ({
         type === 'repeat' && repeatSheetRef.current!.present();
         break;
     }
+  };
+
+  const onDeleteTaskHandle = () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['取消', '删除'],
+        cancelButtonIndex: 0,
+      },
+      buttonIndex => {
+        if (buttonIndex === 1) {
+          console.log('delete');
+        }
+      },
+    );
   };
 
   return (
@@ -218,12 +234,14 @@ const DetailsScreen = ({
 
       <View style={[styles.footBar, publicStyles.inline]}>
         <Text style={styles.footBarText}>创建于6小时前</Text>
-        <MaterialIcon
-          style={styles.footBarDelete}
-          name="delete"
-          size={20}
-          color="#333"
-        />
+        <TouchableOpacity activeOpacity={0.5} onPress={onDeleteTaskHandle}>
+          <MaterialIcon
+            style={styles.footBarDelete}
+            name="delete"
+            size={20}
+            color="#333"
+          />
+        </TouchableOpacity>
       </View>
 
       <RemindBottomModal
