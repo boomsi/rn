@@ -17,7 +17,7 @@ export interface IBottomModalProps extends BottomSheetModalProps {
 const defaultProps = {
   index: 1,
   snapPoints: [300],
-  enableDynamicSizing: true,
+  enableDynamicSizing: false,
   enablePanDownToClose: true,
   handleStyle: {backgroundColor: '#fff'},
   handleIndicatorStyle: {backgroundColor: '#38f'},

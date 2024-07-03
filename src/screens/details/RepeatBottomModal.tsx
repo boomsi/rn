@@ -7,32 +7,32 @@ const repeatSelection = [
   {
     title: '每天',
     key: 'day',
-    date: 'day',
-    time: 'day',
+    date: '每天',
+    time: dayjs().format('HH:mm'),
   },
   {
     title: '每周',
     key: 'week',
-    date: 'week',
-    time: 'week',
+    date: '每周',
+    time: dayjs().format('dddd'),
   },
   {
     title: '工作日',
     key: 'workday',
-    date: 'workday',
-    time: 'workday',
+    date: '每周',
+    time: '工作日',
   },
   {
     title: '每月',
     key: 'month',
-    date: 'month',
-    time: 'month',
+    date: '每月',
+    time: '*-' + dayjs().format('DD HH:mm'),
   },
   {
     title: '每年',
     key: 'year',
-    date: 'year',
-    time: 'year',
+    date: '每年',
+    time: dayjs().format('MM-DD HH:mm'),
   },
   // {
   //   title: '自定义',
@@ -50,8 +50,9 @@ const RepeatBottomModal: React.FC<IProps> = forwardRef(
   ({onOptionsHandle, ...props}, ref) => {
     return (
       <BottomModal
-        snapPoints={[400]}
-        enableDynamicSizing
+        snapPoints={[350]}
+        contentHeight={350}
+        // enableDynamicSizing
         enablePanDownToClose
         ref={ref}
         {...props}>
