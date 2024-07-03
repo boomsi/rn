@@ -9,6 +9,12 @@ import {name as appName} from './app.json';
 import {ThemeProvider} from '@rneui/themed';
 import 'react-native-get-random-values';
 import 'react-native-gesture-handler';
+import 'dayjs/locale/zh-cn';
+import localeData from 'dayjs/plugin/localeData';
+import dayjs from 'dayjs';
+
+dayjs.extend(localeData)
+dayjs.locale('zh-cn');
 
 function Main() {
   return (

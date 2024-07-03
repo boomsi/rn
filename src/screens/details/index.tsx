@@ -113,6 +113,7 @@ const DetailsScreen = ({
       </TouchableHighlight>
       <Divider />
 
+      {/* remind */}
       <TouchableHighlight
         underlayColor="rgba(173, 216, 230, .3)"
         onPress={() => onPressHandle('remind')}>
@@ -138,6 +139,7 @@ const DetailsScreen = ({
         </View>
       </TouchableHighlight>
 
+      {/* schedule */}
       <TouchableHighlight
         underlayColor="rgba(173, 216, 230, .3)"
         onPress={() => onPressHandle('schedule')}>
@@ -163,6 +165,7 @@ const DetailsScreen = ({
         </View>
       </TouchableHighlight>
 
+      {/* repeat */}
       <TouchableHighlight
         underlayColor="rgba(173, 216, 230, .3)"
         onPress={() => onPressHandle('repeat')}>
@@ -189,6 +192,7 @@ const DetailsScreen = ({
       </TouchableHighlight>
       <Divider />
 
+      {/* link */}
       <TouchableHighlight
         underlayColor="rgba(173, 216, 230, .3)"
         onPress={() => onPressHandle('upload')}>

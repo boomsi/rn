@@ -13,19 +13,19 @@ const timeSelection = [
   {
     title: '今日晚些时候',
     key: 'now',
-    time: dayjs().format('dddd mm:ss'),
+    time: dayjs().format('dddd HH:mm'),
     date: '今日',
   },
   {
     title: '明天',
     key: 'tomorrow',
-    time: dayjs().format('dddd mm:ss'),
+    time: dayjs().add(1, 'day').format('dddd HH:mm'),
     date: '明天',
   },
   {
     title: '下周',
     key: 'week',
-    time: dayjs().format('dddd mm:ss'),
+    time: dayjs().add(1, 'week').format('dddd HH:mm'),
     date: '下周',
   },
   {
@@ -43,8 +43,8 @@ const ScheduleBottomModal: React.FC<IProps> = forwardRef(
     const [index, setIndex] = useState<number>(0);
     const [height, setHeight] = useState<number>(300);
     const [value, setValue] = useState<Record<'time' | 'date', string>>({
-      time: new Date().toTimeString(),
-      date: new Date().toDateString(),
+      time: dayjs().format('dddd HH:mm'),
+      date: dayjs().format('MM-DD'),
     });
 
     const onSelectOptions = (item: (typeof timeSelection)[number]) => {
@@ -67,9 +67,9 @@ const ScheduleBottomModal: React.FC<IProps> = forwardRef(
       setValue(old =>
         produce(old, draft => {
           if (type === 'date') {
-            draft.date = date!.toDateString();
+            draft.date = dayjs(date).format('MM-DD');
           } else {
-            draft.time = date!.toTimeString();
+            draft.time = dayjs(date).format('dddd HH:mm');
           }
         }),
       );

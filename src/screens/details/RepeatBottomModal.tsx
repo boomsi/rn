@@ -34,12 +34,12 @@ const repeatSelection = [
     date: 'year',
     time: 'year',
   },
-  {
-    title: '自定义',
-    key: 'custom',
-    time: '22',
-    date: '22',
-  },
+  // {
+  //   title: '自定义',
+  //   key: 'custom',
+  //   time: '22',
+  //   date: '22',
+  // },
 ];
 
 interface IProps extends Omit<IBottomModalProps, 'children'> {
