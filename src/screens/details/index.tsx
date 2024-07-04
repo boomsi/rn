@@ -91,6 +91,7 @@ const DetailsScreen = ({
       {
         options: ['取消', '删除'],
         cancelButtonIndex: 0,
+        destructiveButtonIndex: 1,
       },
       buttonIndex => {
         if (buttonIndex === 1) {
@@ -233,15 +234,13 @@ const DetailsScreen = ({
       <Divider />
 
       <View style={[styles.footBar, publicStyles.inline]}>
+        <Text style={styles.footBarEmpty}> </Text>
         <Text style={styles.footBarText}>创建于6小时前</Text>
-        <TouchableOpacity activeOpacity={0.5} onPress={onDeleteTaskHandle}>
-          <MaterialIcon
-            style={styles.footBarDelete}
-            name="delete"
-            size={20}
-            color="#333"
-          />
-        </TouchableOpacity>
+        <View style={[styles.footBarDelete, publicStyles.inline]}>
+          <TouchableOpacity activeOpacity={0.5} onPress={onDeleteTaskHandle}>
+            <MaterialIcon name="delete" size={20} color="#333" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <RemindBottomModal
@@ -295,17 +294,23 @@ const styles = StyleSheet.create({
     left: 0,
     width: '100%',
     height: 40,
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+  },
+  footBarEmpty: {
+    flex: 2,
+    flexShrink: 0,
   },
   footBarText: {
-    width: '100%',
-    textAlign: 'center',
     color: '#999',
+    flex: 6,
+    textAlign: 'center',
   },
   footBarDelete: {
-    position: 'absolute',
-    right: 20,
-    bottom: '50%',
-    transform: [{translateY: 10}],
+    flexShrink: 0,
+    flex: 2,
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 });
 
