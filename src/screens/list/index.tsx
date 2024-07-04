@@ -1,4 +1,4 @@
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -18,12 +18,13 @@ import publicStyles from 'app/styles';
 import dayjs from 'dayjs';
 import CheckBoxSelf from 'app/components/Checkbox';
 import {Task} from 'app/utils/schema';
+import {NavigationProp} from '@react-navigation/native';
 
 export default function ListScreen({
   navigation,
   route,
 }: {
-  navigation: any;
+  navigation: NavigationProp<{name: string; key: string}>;
   route: any;
 }) {
   const [currentValue, setCurrentValue] = useState<string>('');
@@ -34,6 +35,12 @@ export default function ListScreen({
     1: false,
     2: false,
   });
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => headerRight,
+    });
+  }, []);
 
   const jumpToList = () => {
     navigation.goBack();
@@ -71,8 +78,22 @@ export default function ListScreen({
   };
 
   const onJumpToDetails = (item: Task) => {
-    navigation.navigate('Details', {...item});
+    navigation.navigate('Details' as any, {...item});
   };
+
+  const headerRight = useMemo(() => {
+    return (
+      <View style={publicStyles.inline}>
+        <MaterialIcon
+          style={styles.mr8}
+          name="lightbulb-on-outline"
+          size={20}
+          color="#000"
+        />
+        <MaterialIcon name="dots-horizontal" size={20} color="#000" />
+      </View>
+    );
+  }, []);
 
   const listData = useMemo(() => {
     return taskList.reduce(
@@ -92,67 +113,46 @@ export default function ListScreen({
   }, [taskList, collapsed]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={publicStyles.inline}>
-            <TouchableOpacity
-              onPress={jumpToList}
-              style={[styles.inline, publicStyles.inline]}>
-              <MaterialIcon name="chevron-left" size={40} color="#000" />
-              <Text>列表</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={publicStyles.inline}>
-            <MaterialIcon
-              style={styles.mr8}
-              name="lightbulb-on-outline"
-              size={20}
-              color="#000"
-            />
-            <MaterialIcon name="dots-horizontal" size={20} color="#000" />
-          </View>
-        </View>
-        <View style={styles.content}>
-          <Text style={styles.title}>{route.params.name}</Text>
-          <Text style={styles.subtitle}>{dayjs().format('MM-DD dddd')}</Text>
-          <SectionList
-            style={styles.list}
-            sections={listData}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <TouchableWithoutFeedback onPress={() => onJumpToDetails(item)}>
-                <View
-                  style={[styles.listItem, publicStyles.inline]}
-                  key={item.id}>
-                  <CheckBoxSelf
-                    style={styles.checkbox}
-                    checked={item.status === 2}
-                    onPress={() => onUpdateTask(item.id, item)}
-                  />
-                  <Text>{item.content}</Text>
-                </View>
-              </TouchableWithoutFeedback>
-            )}
-            renderSectionHeader={({section}) => (
-              <TouchableWithoutFeedback
-                onPress={() => onCollapsedChange(section.status)}>
-                <View style={[styles.listTitle, publicStyles.inline]}>
-                  <MaterialIcon
-                    name={
-                      collapsed[section.status]
-                        ? 'chevron-right'
-                        : 'chevron-down'
-                    }
-                    size={20}
-                    color="#fff"
-                  />
-                  <Text style={styles.listTitleText}>{section.title}</Text>
-                </View>
-              </TouchableWithoutFeedback>
-            )}
-          />
-          {/* <FlatList
+    // <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <Text style={styles.title}>{route.params.name}</Text>
+        <Text style={styles.subtitle}>{dayjs().format('MM-DD dddd')}</Text>
+        <SectionList
+          style={styles.list}
+          sections={listData}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
+            <TouchableWithoutFeedback onPress={() => onJumpToDetails(item)}>
+              <View
+                style={[styles.listItem, publicStyles.inline]}
+                key={item.id}>
+                <CheckBoxSelf
+                  style={styles.checkbox}
+                  checked={item.status === 2}
+                  onPress={() => onUpdateTask(item.id, item)}
+                />
+                <Text>{item.content}</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          )}
+          renderSectionHeader={({section}) => (
+            <TouchableWithoutFeedback
+              onPress={() => onCollapsedChange(section.status)}>
+              <View style={[styles.listTitle, publicStyles.inline]}>
+                <MaterialIcon
+                  name={
+                    collapsed[section.status] ? 'chevron-right' : 'chevron-down'
+                  }
+                  size={20}
+                  color="#fff"
+                />
+                <Text style={styles.listTitleText}>{section.title}</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          )}
+        />
+        {/* <FlatList
             data={taskList.filter(({status}) => status === 1)}
             style={styles.list}
             renderItem={({item}) => (
@@ -164,22 +164,22 @@ export default function ListScreen({
               </View>
             )}
           /> */}
-        </View>
-        <View style={styles.footerBar}>
-          <View style={[styles.foot, publicStyles.inline]}>
-            <MaterialIcon name="plus" size={20} color="#fff" />
-            <TextInput
-              value={currentValue}
-              style={styles.addTaskInput}
-              onChangeText={onCurrentValueChange}
-              placeholder="添加任务"
-              placeholderTextColor="#fff"
-              onSubmitEditing={onCreatTask}
-            />
-          </View>
+      </View>
+      <View style={styles.footerBar}>
+        <View style={[styles.foot, publicStyles.inline]}>
+          <MaterialIcon name="plus" size={20} color="#fff" />
+          <TextInput
+            value={currentValue}
+            style={styles.addTaskInput}
+            onChangeText={onCurrentValueChange}
+            placeholder="添加任务"
+            placeholderTextColor="#fff"
+            onSubmitEditing={onCreatTask}
+          />
         </View>
       </View>
-    </SafeAreaView>
+    </View>
+    // </SafeAreaView>
   );
 }
 
@@ -187,14 +187,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'rgba(50, 180, 200, 1)',
+    position: 'relative',
   },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 8,
-    height: 40,
-  },
+
   inline: {
     height: '100%',
     width: 80,
@@ -238,7 +233,8 @@ const styles = StyleSheet.create({
   },
   footerBar: {
     position: 'absolute',
-    bottom: 8,
+    // bottom: 8,
+    bottom: 0,
     left: 0,
     width: '100%',
     paddingHorizontal: 8,

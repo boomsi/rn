@@ -5,6 +5,7 @@ import HomeScreen from 'app/screens/home';
 import ListScreen from 'app/screens/list';
 import DetailsScreen from 'app/screens/details';
 import ExampleScreen from './screens/example';
+import { Text } from '@rneui/base';
 
 const routes: Parameters<typeof Stack.Screen>[number][] = [
   {
@@ -20,6 +21,7 @@ const routes: Parameters<typeof Stack.Screen>[number][] = [
       // headerTitleStyle: {
       //   fontWeight: 'bold',
       // },
+      // headerRight: () => <Text>2333</Text>,
     },
   },
   {
@@ -30,7 +32,8 @@ const routes: Parameters<typeof Stack.Screen>[number][] = [
       name: '我的一天',
     },
     options: {
-      headerShown: false,
+      // headerShown: false,
+      headerRight: () => <Text>2333</Text>
     },
   },
   {
