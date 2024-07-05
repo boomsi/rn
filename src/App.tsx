@@ -18,8 +18,8 @@ function App(): React.JSX.Element {
     <GestureHandlerRootView style={{flex: 1}}>
       <NavigationContainer>
         <Stack.Navigator
-          // initialRouteName="List"
-          initialRouteName="Example"
+          initialRouteName="Home"
+          // initialRouteName="Example"
           screenOptions={{
             headerStyle: {
               backgroundColor: '#38f',

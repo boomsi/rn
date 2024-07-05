@@ -5,7 +5,7 @@ import HomeScreen from 'app/screens/home';
 import ListScreen from 'app/screens/list';
 import DetailsScreen from 'app/screens/details';
 import ExampleScreen from './screens/example';
-import { Text } from '@rneui/base';
+import {Text} from '@rneui/base';
 
 const routes: Parameters<typeof Stack.Screen>[number][] = [
   {
@@ -33,7 +33,10 @@ const routes: Parameters<typeof Stack.Screen>[number][] = [
     },
     options: {
       // headerShown: false,
-      headerRight: () => <Text>2333</Text>
+      headerStyle: {
+        backgroundColor: '#fff',
+      },
+      headerTintColor: '#000',
     },
   },
   {

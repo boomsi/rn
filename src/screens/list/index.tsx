@@ -4,13 +4,11 @@ import {
   View,
   TextInput,
   Dimensions,
-  TouchableOpacity,
   Text,
   SectionList,
   TouchableWithoutFeedback,
 } from 'react-native';
 
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {v4 as uuidv4} from 'uuid';
 import {produce} from 'immer';
 import {MaterialIcon} from 'app/components/MaterialIcon';
@@ -19,6 +17,7 @@ import dayjs from 'dayjs';
 import CheckBoxSelf from 'app/components/Checkbox';
 import {Task} from 'app/utils/schema';
 import {NavigationProp} from '@react-navigation/native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export default function ListScreen({
   navigation,
@@ -27,6 +26,7 @@ export default function ListScreen({
   navigation: NavigationProp<{name: string; key: string}>;
   route: any;
 }) {
+  const inserts = useSafeAreaInsets();
   const [currentValue, setCurrentValue] = useState<string>('');
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [collapsed, setCollapsed] = useState<{
@@ -113,8 +113,13 @@ export default function ListScreen({
   }, [taskList, collapsed]);
 
   return (
-    // <SafeAreaView style={styles.container}>
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingBottom: inserts.bottom,
+        },
+      ]}>
       <View style={styles.content}>
         <Text style={styles.title}>{route.params.name}</Text>
         <Text style={styles.subtitle}>{dayjs().format('MM-DD dddd')}</Text>
@@ -165,7 +170,13 @@ export default function ListScreen({
             )}
           /> */}
       </View>
-      <View style={styles.footerBar}>
+      <View
+        style={[
+          styles.footerBar,
+          {
+            bottom: inserts.bottom,
+          },
+        ]}>
         <View style={[styles.foot, publicStyles.inline]}>
           <MaterialIcon name="plus" size={20} color="#fff" />
           <TextInput
@@ -179,7 +190,6 @@ export default function ListScreen({
         </View>
       </View>
     </View>
-    // </SafeAreaView>
   );
 }
 
@@ -188,6 +198,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(50, 180, 200, 1)',
     position: 'relative',
+    paddingTop: 8,
   },
 
   inline: {
