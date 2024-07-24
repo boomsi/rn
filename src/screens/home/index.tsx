@@ -97,6 +97,7 @@ export default function HomeScreen({
         <View style={[styles.header, publicStyles.inline]}>
           <View style={publicStyles.inline}>
             <Avatar
+              rounded
               size={24}
               source={{uri: '../../../assets/images/nn.webp'}}
             />
@@ -143,9 +144,9 @@ export default function HomeScreen({
         <View style={[styles.footerBar, publicStyles.inline]}>
           <View style={publicStyles.inline}>
             <MaterialIcon name="plus" size={20} color="blue" />
-            <Text>新建列表</Text>
+            <Text style={publicStyles.active}>新建列表</Text>
           </View>
-          <MaterialIcon name="card-plus-outline" size={20} color="#000" />
+          <MaterialIcon name="card-plus-outline" size={20} color="blue" />
         </View>
       </View>
     </SafeAreaView>
