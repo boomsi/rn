@@ -5,11 +5,16 @@ import {
   View,
   Text,
   Image,
+  useWindowDimensions,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {MaterialIcon} from 'app/components/MaterialIcon';
 import publicStyles from 'app/styles';
 import {Avatar, Divider} from '@rneui/themed';
+import BottomModalFull from 'app/components/BottomModalFull';
+import {Modalize} from 'react-native-modalize';
+import {useRef} from 'react';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const menu = [
   {
@@ -72,6 +77,13 @@ export default function HomeScreen({
   navigation: any;
   route: any;
 }) {
+  const inserts = useSafeAreaInsets();
+  const modallizeRef = useRef<Modalize>(null);
+
+  const onOpenProfile = () => {
+    modallizeRef.current?.open();
+  };
+
   const jumpToDetails = (options: (typeof menu)[number]) => {
     switch (options.key) {
       case 'day':
@@ -92,9 +104,16 @@ export default function HomeScreen({
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <View style={[styles.header, publicStyles.inline]}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingTop: inserts.top,
+          paddingBottom: inserts.bottom,
+        },
+      ]}>
+      <View style={[styles.header, publicStyles.inline]}>
+        <TouchableOpacity onPress={onOpenProfile}>
           <View style={publicStyles.inline}>
             <Avatar
               rounded
@@ -103,53 +122,65 @@ export default function HomeScreen({
             />
             <Text style={styles.name}>Ma Bo</Text>
           </View>
-          <MaterialIcon name="magnify" size={20} color="blue" />
-        </View>
-
-        <ScrollView>
-          {menu.map(item => (
-            <TouchableHighlight
-              underlayColor="#ccc"
-              onPress={() => jumpToDetails(item)}
-              key={item.key}>
-              <View style={[styles.listItem, publicStyles.inline]}>
-                <MaterialIcon
-                  style={styles.listItemIcon}
-                  name={item.icon}
-                  size={20}
-                  color={item.color}
-                />
-                <Text>{item.name}</Text>
-              </View>
-            </TouchableHighlight>
-          ))}
-          <Divider style={styles.divider} />
-          {subMenu.map(item => (
-            <TouchableHighlight
-              underlayColor="#ccc"
-              onPress={() => jumpToDetails(item)}
-              key={item.key}>
-              <View style={[styles.listItem, publicStyles.inline]}>
-                <MaterialIcon
-                  style={styles.listItemIcon}
-                  name={item.icon}
-                  size={20}
-                  color={item.color}
-                />
-                <Text>{item.name}</Text>
-              </View>
-            </TouchableHighlight>
-          ))}
-        </ScrollView>
-        <View style={[styles.footerBar, publicStyles.inline]}>
-          <View style={publicStyles.inline}>
-            <MaterialIcon name="plus" size={20} color="blue" />
-            <Text style={publicStyles.active}>新建列表</Text>
-          </View>
-          <MaterialIcon name="card-plus-outline" size={20} color="blue" />
-        </View>
+        </TouchableOpacity>
+        <MaterialIcon name="magnify" size={20} color="blue" />
       </View>
-    </SafeAreaView>
+
+      <ScrollView>
+        {menu.map(item => (
+          <TouchableHighlight
+            underlayColor="#ccc"
+            onPress={() => jumpToDetails(item)}
+            key={item.key}>
+            <View style={[styles.listItem, publicStyles.inline]}>
+              <MaterialIcon
+                style={styles.listItemIcon}
+                name={item.icon}
+                size={20}
+                color={item.color}
+              />
+              <Text>{item.name}</Text>
+            </View>
+          </TouchableHighlight>
+        ))}
+        <Divider style={styles.divider} />
+        {subMenu.map(item => (
+          <TouchableHighlight
+            underlayColor="#ccc"
+            onPress={() => jumpToDetails(item)}
+            key={item.key}>
+            <View style={[styles.listItem, publicStyles.inline]}>
+              <MaterialIcon
+                style={styles.listItemIcon}
+                name={item.icon}
+                size={20}
+                color={item.color}
+              />
+              <Text>{item.name}</Text>
+            </View>
+          </TouchableHighlight>
+        ))}
+      </ScrollView>
+
+      <BottomModalFull ref={modallizeRef}>
+        <Text>2333</Text>
+      </BottomModalFull>
+
+      <View
+        style={[
+          styles.footerBar,
+          publicStyles.inline,
+          {
+            bottom: inserts.bottom,
+          },
+        ]}>
+        <View style={publicStyles.inline}>
+          <MaterialIcon name="plus" size={20} color="blue" />
+          <Text style={publicStyles.active}>新建列表</Text>
+        </View>
+        <MaterialIcon name="card-plus-outline" size={20} color="blue" />
+      </View>
+    </View>
   );
 }
 

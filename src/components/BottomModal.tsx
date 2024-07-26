@@ -9,6 +9,8 @@ import {
   BottomSheetModalProps,
 } from '@gorhom/bottom-sheet';
 
+// reference https://ui.gorhom.dev/components/bottom-sheet/modal
+
 export interface IBottomModalProps extends BottomSheetModalProps {
   children: React.ReactNode;
   ref?: any;
