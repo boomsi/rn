@@ -1,7 +1,8 @@
-import {Image} from '@rneui/base';
+import {Image, Tab, TabView} from '@rneui/base';
 import {MaterialIcon} from 'app/components/MaterialIcon';
 import SwitchSelf from 'app/components/Switch';
 import publicStyles from 'app/styles';
+import {useState} from 'react';
 import {
   SectionList,
   StyleSheet,
@@ -164,6 +165,7 @@ type IItem = (typeof DATA)[number]['data'][number];
 
 const Settings = () => {
   const inserts = useSafeAreaInsets();
+  const [tabIndex, setTabIndex] = useState(0);
 
   const renderItem = (type: IItem['type'], item: IItem) => {
     switch (type) {
@@ -197,69 +199,86 @@ const Settings = () => {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.profile]}>
-        <View style={styles.author}>
-          <Image
-            style={styles.authorPic}
-            // source={{uri: require('./imgs/nn.webp')}}
-            source={{uri: require('./imgs/2.png')}}
-          />
-        </View>
-        <View>
-          <Text style={styles.profileName}>Name</Text>
-        </View>
-        <View>
-          <Text style={styles.profileAddress}>Address@email.com</Text>
-        </View>
-        <View style={styles.profileManagerBtn}>
-          <Text style={[publicStyles.textCenter, publicStyles.active]}>
-            管理账户
-          </Text>
-        </View>
-      </View>
-      <View style={[styles.block]}>
-        <SectionList
-          sections={DATA}
-          keyExtractor={item => item.title}
-          renderSectionHeader={item => (
-            <View style={styles.subtitle}>
-              <Text>{item.section.title}</Text>
+      <TabView
+        value={tabIndex}
+        onChange={setTabIndex}
+        containerStyle={styles.container}
+        tabItemContainerStyle={styles.container}>
+        <TabView.Item
+          style={[styles.tabItem, {flex: 1, backgroundColor: 'red'}]}>
+          <View style={styles.container}>
+            <View style={[styles.profile]}>
+              <View style={styles.author}>
+                <Image
+                  style={styles.authorPic}
+                  // source={{uri: require('./imgs/nn.webp')}}
+                  source={{uri: require('./imgs/2.png')}}
+                />
+              </View>
+              <View>
+                <Text style={styles.profileName}>Name</Text>
+              </View>
+              <View>
+                <Text style={styles.profileAddress}>Address@email.com</Text>
+              </View>
+              <View style={styles.profileManagerBtn}>
+                <Text style={[publicStyles.textCenter, publicStyles.active]}>
+                  管理账户
+                </Text>
+              </View>
             </View>
-          )}
-          renderItem={item => renderItem(item.item.type, item.item)}
-        />
-      </View>
-      <View style={styles.footer}>
-        <Text style={[publicStyles.textCenter, styles.grey]}>
-          Microsoft To Do
-        </Text>
-        <Text style={[publicStyles.textCenter, styles.grey]}>
-          @ 2023 Microsoft.
-        </Text>
-      </View>
-      <View>
-        <View style={styles.item}>
-          <Text
-            style={[
-              publicStyles.textCenter,
-              publicStyles.dangerText,
-              styles.itemText,
-            ]}>
-            注销
-          </Text>
-        </View>
-        <View style={styles.item}>
-          <Text
-            style={[
-              publicStyles.textCenter,
-              publicStyles.dangerText,
-              styles.itemText,
-            ]}>
-            删除账户
-          </Text>
-        </View>
-      </View>
-      <View style={{height: inserts.bottom, backgroundColor: '#eee'}}></View>
+            <View style={[styles.block]}>
+              <SectionList
+                sections={DATA}
+                keyExtractor={item => item.title}
+                renderSectionHeader={item => (
+                  <View style={styles.subtitle}>
+                    <Text>{item.section.title}</Text>
+                  </View>
+                )}
+                renderItem={item => renderItem(item.item.type, item.item)}
+              />
+            </View>
+            <View style={styles.footer}>
+              <Text style={[publicStyles.textCenter, styles.grey]}>
+                Microsoft To Do
+              </Text>
+              <Text style={[publicStyles.textCenter, styles.grey]}>
+                @ 2023 Microsoft.
+              </Text>
+            </View>
+            <View>
+              <View style={styles.item}>
+                <Text
+                  style={[
+                    publicStyles.textCenter,
+                    publicStyles.dangerText,
+                    styles.itemText,
+                  ]}>
+                  注销
+                </Text>
+              </View>
+              <View style={styles.item}>
+                <Text
+                  style={[
+                    publicStyles.textCenter,
+                    publicStyles.dangerText,
+                    styles.itemText,
+                  ]}>
+                  删除账户
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{height: inserts.bottom, backgroundColor: '#eee'}}></View>
+          </View>
+          {/* </TabView.Item> */}
+          {/* <TabView.Item> */}
+          <View style={styles.container}>
+            <Text>2333</Text>
+          </View>
+        </TabView.Item>
+      </TabView>
     </View>
   );
 };
@@ -268,6 +287,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#eee',
+    borderWidth: 1,
+  },
+  tabItem: {
+    width: '100%',
   },
   profile: {
     backgroundColor: '#fff',
