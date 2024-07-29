@@ -3,6 +3,8 @@ import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 MIcon.loadFont();
 
+// reference https://static.enapter.com/rn/icons/material-community.html
+
 type IconSizeProps = {
   iconSizes: keyof typeof IconSizes;
 };
