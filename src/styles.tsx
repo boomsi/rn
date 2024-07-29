@@ -8,7 +8,13 @@ const publicStyles = StyleSheet.create({
   },
   active: {
     color: 'blue'
-  }
+  },
+  dangerText: {
+    color: 'red',
+  },
+  textCenter: {
+    textAlign: 'center',
+  },
 });
 
 export default publicStyles;

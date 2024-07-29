@@ -3,9 +3,14 @@ import {forwardRef} from 'react';
 import {StyleSheet, Text, View, useWindowDimensions} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Modalize} from 'react-native-modalize';
+import {IProps} from 'react-native-modalize/lib/options';
 
-const BottomModalFull = forwardRef(
-  ({children}: {children: React.ReactNode}, ref) => {
+interface IBProps extends IProps {
+  children: React.ReactNode;
+}
+
+const BottomModalFull = forwardRef<any, IBProps>(
+  ({children, ...attrs}, ref) => {
     const {height} = useWindowDimensions();
 
     return (
@@ -14,16 +19,9 @@ const BottomModalFull = forwardRef(
         // snapPoint={300}
         // modalTopOffset={200}
         modalHeight={height - 100}
-        HeaderComponent={
-          <View style={styles.header}>
-            <Text style={styles.headerText}>设置</Text>
-            <TouchableOpacity>
-              <Text style={[styles.close, publicStyles.active]}>关闭</Text>
-            </TouchableOpacity>
-          </View>
-        }
         withHandle={false}
-        handlePosition="inside">
+        handlePosition="inside"
+        {...attrs}>
         {children}
       </Modalize>
     );
@@ -31,21 +29,7 @@ const BottomModalFull = forwardRef(
 );
 
 const styles = StyleSheet.create({
-  header: {
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: 'grey',
-    position: 'relative',
-  },
-  headerText: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  close: {
-    position: 'absolute',
-    right: 16,
-    top: -16,
-  },
+  
 });
 
 export default BottomModalFull;

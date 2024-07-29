@@ -13,8 +13,9 @@ import publicStyles from 'app/styles';
 import {Avatar, Divider} from '@rneui/themed';
 import BottomModalFull from 'app/components/BottomModalFull';
 import {Modalize} from 'react-native-modalize';
-import {useRef} from 'react';
+import {useEffect, useRef} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import Settings from '../settings';
 
 const menu = [
   {
@@ -80,6 +81,10 @@ export default function HomeScreen({
   const inserts = useSafeAreaInsets();
   const modallizeRef = useRef<Modalize>(null);
 
+  useEffect(() => {
+    onOpenProfile();
+  }, [])
+  
   const onOpenProfile = () => {
     modallizeRef.current?.open();
   };
@@ -118,7 +123,7 @@ export default function HomeScreen({
             <Avatar
               rounded
               size={24}
-              source={{uri: '../../../assets/images/nn.webp'}}
+              source={{uri: require('app/assets/images/nn.webp')}}
             />
             <Text style={styles.name}>Ma Bo</Text>
           </View>
@@ -162,8 +167,19 @@ export default function HomeScreen({
         ))}
       </ScrollView>
 
-      <BottomModalFull ref={modallizeRef}>
-        <Text>2333</Text>
+      <BottomModalFull
+        ref={modallizeRef}
+        HeaderComponent={
+          <View style={styles.settingsHeader}>
+            <Text style={styles.settingsHeaderText}>设置</Text>
+            <TouchableOpacity onPress={() => modallizeRef.current?.close()}>
+              <Text style={[styles.settingsHeaderclose, publicStyles.active]}>
+                关闭
+              </Text>
+            </TouchableOpacity>
+          </View>
+        }>
+        <Settings />
       </BottomModalFull>
 
       <View
@@ -215,5 +231,21 @@ const styles = StyleSheet.create({
     left: 0,
     width: '100%',
     justifyContent: 'space-between',
+  },
+
+  settingsHeader: {
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+    position: 'relative',
+  },
+  settingsHeaderText: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  settingsHeaderclose: {
+    position: 'absolute',
+    right: 16,
+    top: -16,
   },
 });

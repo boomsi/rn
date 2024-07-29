@@ -17,3 +17,7 @@ Refer to Microsoft Todo, but better(I didn't say it. copilot generated it:)).
 #### Caution and FIXME
 
 - [BottomSheet](https://github.com/gorhom/react-native-bottom-sheet/pull/1848) Warning
+
+
+#### ???
+`npx react-native-asset`
