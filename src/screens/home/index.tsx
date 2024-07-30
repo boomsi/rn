@@ -79,12 +79,13 @@ export default function HomeScreen({
   route: any;
 }) {
   const inserts = useSafeAreaInsets();
+  const area = useWindowDimensions();
   const modallizeRef = useRef<Modalize>(null);
 
   useEffect(() => {
     onOpenProfile();
-  }, [])
-  
+  }, []);
+
   const onOpenProfile = () => {
     modallizeRef.current?.open();
   };
@@ -168,6 +169,7 @@ export default function HomeScreen({
       </ScrollView>
 
       <BottomModalFull
+        height={area.height - 100}
         ref={modallizeRef}
         HeaderComponent={
           <View style={styles.settingsHeader}>
@@ -179,7 +181,7 @@ export default function HomeScreen({
             </TouchableOpacity>
           </View>
         }>
-        <Settings />
+        <Settings height={area.height} />
       </BottomModalFull>
 
       <View
@@ -234,18 +236,20 @@ const styles = StyleSheet.create({
   },
 
   settingsHeader: {
-    paddingVertical: 16,
+    height: 50,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
     position: 'relative',
   },
   settingsHeaderText: {
+    lineHeight: 50,
     textAlign: 'center',
     fontWeight: 'bold',
   },
   settingsHeaderclose: {
     position: 'absolute',
     right: 16,
-    top: -16,
+    top: -50,
+    lineHeight: 50
   },
 });

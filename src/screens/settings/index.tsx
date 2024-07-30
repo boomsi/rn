@@ -1,8 +1,8 @@
-import {Image, Tab, TabView} from '@rneui/base';
+import {Image, Tab, TabView} from '@rneui/themed';
 import {MaterialIcon} from 'app/components/MaterialIcon';
 import SwitchSelf from 'app/components/Switch';
 import publicStyles from 'app/styles';
-import {useState} from 'react';
+import {FC, useState} from 'react';
 import {
   SectionList,
   StyleSheet,
@@ -163,7 +163,11 @@ const DATA = [
 
 type IItem = (typeof DATA)[number]['data'][number];
 
-const Settings = () => {
+interface IProps {
+  height: number;
+}
+
+const Settings: FC<IProps> = ({height}) => {
   const inserts = useSafeAreaInsets();
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -198,14 +202,9 @@ const Settings = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TabView
-        value={tabIndex}
-        onChange={setTabIndex}
-        containerStyle={styles.container}
-        tabItemContainerStyle={styles.container}>
-        <TabView.Item
-          style={[styles.tabItem, {flex: 1, backgroundColor: 'red'}]}>
+    <View style={[styles.container, {height}]}>
+      <TabView value={tabIndex} onChange={setTabIndex}>
+        <TabView.Item style={[styles.tabItem]}>
           <View style={styles.container}>
             <View style={[styles.profile]}>
               <View style={styles.author}>
@@ -272,8 +271,8 @@ const Settings = () => {
             <View
               style={{height: inserts.bottom, backgroundColor: '#eee'}}></View>
           </View>
-          {/* </TabView.Item> */}
-          {/* <TabView.Item> */}
+        </TabView.Item>
+        <TabView.Item>
           <View style={styles.container}>
             <Text>2333</Text>
           </View>
@@ -287,7 +286,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#eee',
-    borderWidth: 1,
   },
   tabItem: {
     width: '100%',
@@ -327,6 +325,7 @@ const styles = StyleSheet.create({
   },
   block: {
     paddingTop: 16,
+    flex: 1
   },
   subtitle: {
     paddingVertical: 8,

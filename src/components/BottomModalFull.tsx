@@ -1,24 +1,21 @@
-import publicStyles from 'app/styles';
 import {forwardRef} from 'react';
 import {StyleSheet, Text, View, useWindowDimensions} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Modalize} from 'react-native-modalize';
 import {IProps} from 'react-native-modalize/lib/options';
 
 interface IBProps extends IProps {
   children: React.ReactNode;
+  height: number;
 }
 
 const BottomModalFull = forwardRef<any, IBProps>(
-  ({children, ...attrs}, ref) => {
-    const {height} = useWindowDimensions();
-
+  ({children, height, ...attrs}, ref) => {
     return (
       <Modalize
         ref={ref}
         // snapPoint={300}
         // modalTopOffset={200}
-        modalHeight={height - 100}
+        modalHeight={height}
         withHandle={false}
         handlePosition="inside"
         {...attrs}>
@@ -28,8 +25,6 @@ const BottomModalFull = forwardRef<any, IBProps>(
   },
 );
 
-const styles = StyleSheet.create({
-  
-});
+const styles = StyleSheet.create({});
 
 export default BottomModalFull;
